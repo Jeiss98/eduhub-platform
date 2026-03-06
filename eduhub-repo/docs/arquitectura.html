@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Arquitectura - EduHub Platform</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700&family=JetBrains+Mono:wght@400;600&display=swap');
+
+  :root {
+    --bg: #0a0e1a;
+    --surface: #111827;
+    --surface2: #1a2235;
+    --accent: #3b82f6;
+    --accent2: #10b981;
+    --accent3: #f59e0b;
+    --text: #e2e8f0;
+    --muted: #64748b;
+    --border: #1e293b;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Sora', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    padding: 0;
+  }
+
+  .cover {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 4rem 2rem;
+    background: radial-gradient(ellipse at 30% 40%, rgba(59,130,246,0.15) 0%, transparent 60%),
+                radial-gradient(ellipse at 70% 60%, rgba(16,185,129,0.1) 0%, transparent 60%),
+                var(--bg);
+    position: relative;
+    overflow: hidden;
+    page-break-after: always;
+  }
+
+  .cover::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-image: repeating-linear-gradient(
+      0deg, transparent, transparent 39px,
+      rgba(255,255,255,0.02) 39px, rgba(255,255,255,0.02) 40px
+    ),
+    repeating-linear-gradient(
+      90deg, transparent, transparent 39px,
+      rgba(255,255,255,0.02) 39px, rgba(255,255,255,0.02) 40px
+    );
+  }
+
+  .cover-badge {
+    display: inline-block;
+    background: rgba(59,130,246,0.15);
+    border: 1px solid rgba(59,130,246,0.3);
+    color: var(--accent);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 0.4rem 1rem;
+    border-radius: 100px;
+    margin-bottom: 2rem;
+    position: relative;
+  }
+
+  .cover h1 {
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    font-weight: 700;
+    line-height: 1.1;
+    margin-bottom: 1rem;
+    position: relative;
+  }
+
+  .cover h1 span {
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .cover-sub {
+    font-size: 1.1rem;
+    color: var(--muted);
+    max-width: 500px;
+    position: relative;
+    margin-bottom: 3rem;
+  }
+
+  .cover-tags {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    position: relative;
+  }
+
+  .tag {
+    padding: 0.4rem 0.9rem;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .tag-blue { background: rgba(59,130,246,0.15); color: #93c5fd; border: 1px solid rgba(59,130,246,0.2); }
+  .tag-green { background: rgba(16,185,129,0.15); color: #6ee7b7; border: 1px solid rgba(16,185,129,0.2); }
+  .tag-yellow { background: rgba(245,158,11,0.15); color: #fcd34d; border: 1px solid rgba(245,158,11,0.2); }
+  .tag-purple { background: rgba(139,92,246,0.15); color: #c4b5fd; border: 1px solid rgba(139,92,246,0.2); }
+
+  .cover-meta {
+    position: absolute;
+    bottom: 2rem;
+    display: flex;
+    gap: 3rem;
+    font-size: 0.8rem;
+    color: var(--muted);
+  }
+
+  .cover-meta span strong { color: var(--text); display: block; font-size: 0.9rem; }
+
+  .content {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 4rem 2rem;
+  }
+
+  .section {
+    margin-bottom: 4rem;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .section-num {
+    width: 36px;
+    height: 36px;
+    background: linear-gradient(135deg, var(--accent), #1d4ed8);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    font-weight: 700;
+    flex-shrink: 0;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .section h2 {
+    font-size: 1.4rem;
+    font-weight: 700;
+  }
+
+  .section h3 {
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin: 1.5rem 0 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .section h3::before {
+    content: '';
+    width: 3px;
+    height: 16px;
+    background: var(--accent);
+    border-radius: 2px;
+    display: inline-block;
+  }
+
+  p { color: #94a3b8; margin-bottom: 0.75rem; }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .card-title {
+    font-weight: 600;
+    font-size: 0.95rem;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .card p { margin: 0; font-size: 0.9rem; }
+
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+
+  .three-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1rem;
+  }
+
+  .db-card {
+    background: var(--surface);
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+
+  .db-card-header {
+    padding: 1rem 1.5rem;
+    font-weight: 700;
+    font-size: 0.9rem;
+    letter-spacing: 0.05em;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .db-header-mysql { background: linear-gradient(135deg, rgba(59,130,246,0.2), rgba(29,78,216,0.2)); border-bottom: 1px solid rgba(59,130,246,0.2); color: #93c5fd; }
+  .db-header-mongo { background: linear-gradient(135deg, rgba(16,185,129,0.2), rgba(5,150,105,0.2)); border-bottom: 1px solid rgba(16,185,129,0.2); color: #6ee7b7; }
+
+  .db-card-body { padding: 1rem 1.5rem; }
+
+  .entity {
+    background: var(--surface2);
+    border-radius: 8px;
+    margin-bottom: 0.75rem;
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+
+  .entity-name {
+    background: rgba(255,255,255,0.04);
+    padding: 0.4rem 0.75rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .entity-fields {
+    padding: 0.5rem 0.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .field {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--muted);
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .field-pk { color: #fbbf24; }
+  .field-fk { color: #a78bfa; }
+  .field-type { color: #64748b; }
+
+  .arch-diagram {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 2rem;
+    text-align: center;
+  }
+
+  .arch-layer {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-bottom: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .arch-box {
+    padding: 0.6rem 1.2rem;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .arch-arrow {
+    color: var(--muted);
+    font-size: 1.2rem;
+    margin: 0.25rem 0;
+  }
+
+  .box-blue { background: rgba(59,130,246,0.15); border: 1px solid rgba(59,130,246,0.3); color: #93c5fd; }
+  .box-green { background: rgba(16,185,129,0.15); border: 1px solid rgba(16,185,129,0.3); color: #6ee7b7; }
+  .box-yellow { background: rgba(245,158,11,0.15); border: 1px solid rgba(245,158,11,0.3); color: #fcd34d; }
+  .box-purple { background: rgba(139,92,246,0.15); border: 1px solid rgba(139,92,246,0.3); color: #c4b5fd; }
+  .box-red { background: rgba(239,68,68,0.15); border: 1px solid rgba(239,68,68,0.3); color: #fca5a5; }
+
+  .materia-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .materia-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+  }
+
+  .materia-bd::before { background: linear-gradient(90deg, var(--accent), #1d4ed8); }
+  .materia-nt::before { background: linear-gradient(90deg, var(--accent2), #059669); }
+  .materia-di::before { background: linear-gradient(90deg, var(--accent3), #d97706); }
+
+  .materia-label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+
+  .materia-title {
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+  }
+
+  .check-list { list-style: none; }
+  .check-list li {
+    font-size: 0.85rem;
+    color: #94a3b8;
+    padding: 0.2rem 0;
+    display: flex;
+    gap: 0.5rem;
+    align-items: flex-start;
+  }
+
+  .check-list li::before { content: '✓'; color: var(--accent2); font-weight: 700; flex-shrink: 0; }
+
+  .timeline {
+    position: relative;
+    padding-left: 2rem;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 0.5rem;
+    top: 0.5rem;
+    bottom: 0.5rem;
+    width: 2px;
+    background: linear-gradient(to bottom, var(--accent), var(--accent2));
+    border-radius: 2px;
+  }
+
+  .timeline-item {
+    position: relative;
+    margin-bottom: 1.5rem;
+  }
+
+  .timeline-dot {
+    position: absolute;
+    left: -1.75rem;
+    top: 0.35rem;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--accent);
+    border: 2px solid var(--bg);
+  }
+
+  .timeline-week {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--accent);
+    font-family: 'JetBrains Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.25rem;
+  }
+
+  .timeline-title { font-weight: 600; font-size: 0.9rem; margin-bottom: 0.25rem; }
+  .timeline-desc { font-size: 0.82rem; color: var(--muted); }
+
+  .highlight-box {
+    background: linear-gradient(135deg, rgba(59,130,246,0.08), rgba(16,185,129,0.08));
+    border: 1px solid rgba(59,130,246,0.2);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin: 1.5rem 0;
+  }
+
+  .highlight-box p { color: var(--text); margin: 0; font-size: 0.95rem; }
+
+  .stack-row {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem;
+    background: var(--surface2);
+    border-radius: 8px;
+    margin-bottom: 0.5rem;
+    border: 1px solid var(--border);
+  }
+
+  .stack-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+    flex-shrink: 0;
+  }
+
+  .stack-name { font-weight: 600; font-size: 0.88rem; flex: 1; }
+  .stack-desc { font-size: 0.78rem; color: var(--muted); }
+
+  @media (max-width: 640px) {
+    .two-col, .three-col { grid-template-columns: 1fr; }
+    .cover-meta { gap: 1.5rem; flex-wrap: wrap; justify-content: center; }
+  }
+
+  @media print {
+    body { background: white; color: black; }
+  }
+</style>
+</head>
+<body>
+
+<!-- PORTADA -->
+<div class="cover">
+  <div class="cover-badge">Documento de Arquitectura v1.0</div>
+  <h1>EduHub <span>Platform</span></h1>
+  <p class="cover-sub">Plataforma académica unificada con gestión de proyectos, noticias y seguimiento de avances.</p>
+  <div class="cover-tags">
+    <span class="tag tag-blue">Node.js + Express</span>
+    <span class="tag tag-green">MongoDB</span>
+    <span class="tag tag-yellow">MySQL</span>
+    <span class="tag tag-purple">React</span>
+  </div>
+  <div class="cover-meta">
+    <span><strong>Base de Datos</strong>Materia</span>
+    <span><strong>Nuevas Tecnologías</strong>Materia</span>
+    <span><strong>Diseño de Interfaces</strong>Materia</span>
+  </div>
+</div>
+
+<div class="content">
+
+  <!-- 1. PROBLEMA Y SOLUCIÓN -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">01</div>
+      <h2>Problema y Solución</h2>
+    </div>
+
+    <div class="highlight-box">
+      <p>Tienes 3 proyectos de distintas materias con requerimientos técnicos diferentes. La solución es construir <strong>una sola plataforma</strong> que los integre de forma coherente, justificando técnicamente el uso de dos bases de datos distintas.</p>
+    </div>
+
+    <h3>¿Por qué funciona esta integración?</h3>
+    <div class="two-col">
+      <div class="card">
+        <div class="card-title">🏫 Contexto real</div>
+        <p>Todos los portales universitarios reales tienen: gestión académica + noticias/anuncios. Es natural y coherente.</p>
+      </div>
+      <div class="card">
+        <div class="card-title">🗃️ Justificación técnica</div>
+        <p>Los datos académicos son estructurados (relacional). Las noticias son contenido flexible y variable (no relacional).</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. ARQUITECTURA -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">02</div>
+      <h2>Arquitectura del Sistema</h2>
+    </div>
+
+    <div class="arch-diagram">
+      <p style="color: var(--muted); font-size: 0.8rem; margin-bottom: 1.5rem; text-transform: uppercase; letter-spacing: 0.1em; font-family: 'JetBrains Mono', monospace;">Capas del sistema</p>
+
+      <div class="arch-layer">
+        <div class="arch-box box-blue">🌐 React Frontend</div>
+      </div>
+      <div class="arch-arrow">↕ REST API / Axios</div>
+      <div class="arch-layer">
+        <div class="arch-box box-purple">🔐 Auth Middleware (JWT)</div>
+      </div>
+      <div class="arch-arrow">↕</div>
+      <div class="arch-layer">
+        <div class="arch-box box-green">📦 Node.js + Express API</div>
+      </div>
+      <div class="arch-arrow">↕</div>
+      <div class="arch-layer">
+        <div class="arch-box box-yellow">📧 Nodemailer</div>
+        <div class="arch-box box-blue">🐬 MySQL (Sequelize)</div>
+        <div class="arch-box box-green">🍃 MongoDB (Mongoose)</div>
+      </div>
+    </div>
+
+    <h3>Estructura de Carpetas (Backend)</h3>
+    <div class="card" style="background: #0d1117; border-color: #21262d;">
+      <pre style="font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; color: #8b949e; line-height: 1.8;">
+<span style="color: #58a6ff;">eduhub-backend/</span>
+├── <span style="color: #58a6ff;">config/</span>
+│   ├── mysql.js        <span style="color: #3d444d;">← conexión MySQL</span>
+│   └── mongodb.js      <span style="color: #3d444d;">← conexión MongoDB</span>
+├── <span style="color: #58a6ff;">models/</span>
+│   ├── mysql/          <span style="color: #3d444d;">← Usuario, Proyecto, Tarea, Evaluacion</span>
+│   └── mongo/          <span style="color: #3d444d;">← Noticia, Comentario</span>
+├── <span style="color: #58a6ff;">routes/</span>
+│   ├── auth.routes.js
+│   ├── proyectos.routes.js
+│   ├── tareas.routes.js
+│   └── noticias.routes.js
+├── <span style="color: #58a6ff;">middlewares/</span>
+│   ├── auth.middleware.js
+│   └── roles.middleware.js
+├── <span style="color: #58a6ff;">services/</span>
+│   └── email.service.js
+└── app.js</pre>
+    </div>
+  </div>
+
+  <!-- 3. BASE DE DATOS -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">03</div>
+      <h2>Diseño de Bases de Datos</h2>
+    </div>
+
+    <div class="two-col">
+      <!-- MySQL -->
+      <div class="db-card">
+        <div class="db-card-header db-header-mysql">🐬 MySQL — Datos Relacionales</div>
+        <div class="db-card-body">
+
+          <div class="entity">
+            <div class="entity-name">USUARIOS</div>
+            <div class="entity-fields">
+              <div class="field"><span class="field-pk">🔑 id</span><span class="field-type">INT PK AUTO</span></div>
+              <div class="field"><span>nombre</span><span class="field-type">VARCHAR(100)</span></div>
+              <div class="field"><span>email</span><span class="field-type">VARCHAR UNIQUE</span></div>
+              <div class="field"><span>password_hash</span><span class="field-type">VARCHAR(255)</span></div>
+              <div class="field"><span>rol</span><span class="field-type">ENUM(est,doc,admin)</span></div>
+              <div class="field"><span>created_at</span><span class="field-type">TIMESTAMP</span></div>
+            </div>
+          </div>
+
+          <div class="entity">
+            <div class="entity-name">PROYECTOS</div>
+            <div class="entity-fields">
+              <div class="field"><span class="field-pk">🔑 id</span><span class="field-type">INT PK AUTO</span></div>
+              <div class="field"><span class="field-fk">🔗 docente_id</span><span class="field-type">FK → USUARIOS</span></div>
+              <div class="field"><span>titulo</span><span class="field-type">VARCHAR(200)</span></div>
+              <div class="field"><span>descripcion</span><span class="field-type">TEXT</span></div>
+              <div class="field"><span>fecha_limite</span><span class="field-type">DATE</span></div>
+              <div class="field"><span>estado</span><span class="field-type">ENUM</span></div>
+            </div>
+          </div>
+
+          <div class="entity">
+            <div class="entity-name">TAREAS</div>
+            <div class="entity-fields">
+              <div class="field"><span class="field-pk">🔑 id</span><span class="field-type">INT PK AUTO</span></div>
+              <div class="field"><span class="field-fk">🔗 proyecto_id</span><span class="field-type">FK → PROYECTOS</span></div>
+              <div class="field"><span class="field-fk">🔗 asignado_a</span><span class="field-type">FK → USUARIOS</span></div>
+              <div class="field"><span>titulo</span><span class="field-type">VARCHAR(200)</span></div>
+              <div class="field"><span>prioridad</span><span class="field-type">ENUM(baja,media,alta)</span></div>
+              <div class="field"><span>completada</span><span class="field-type">BOOLEAN</span></div>
+            </div>
+          </div>
+
+          <div class="entity">
+            <div class="entity-name">EVALUACIONES</div>
+            <div class="entity-fields">
+              <div class="field"><span class="field-pk">🔑 id</span><span class="field-type">INT PK AUTO</span></div>
+              <div class="field"><span class="field-fk">🔗 proyecto_id</span><span class="field-type">FK → PROYECTOS</span></div>
+              <div class="field"><span class="field-fk">🔗 docente_id</span><span class="field-type">FK → USUARIOS</span></div>
+              <div class="field"><span>calificacion</span><span class="field-type">DECIMAL(4,2)</span></div>
+              <div class="field"><span>comentarios</span><span class="field-type">TEXT</span></div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- MongoDB -->
+      <div class="db-card">
+        <div class="db-card-header db-header-mongo">🍃 MongoDB — Contenido Flexible</div>
+        <div class="db-card-body">
+
+          <div class="entity">
+            <div class="entity-name">noticias</div>
+            <div class="entity-fields">
+              <div class="field"><span class="field-pk">_id</span><span class="field-type">ObjectId</span></div>
+              <div class="field"><span>titulo</span><span class="field-type">String</span></div>
+              <div class="field"><span>contenido</span><span class="field-type">String (HTML)</span></div>
+              <div class="field"><span>categoria</span><span class="field-type">String</span></div>
+              <div class="field"><span>tags</span><span class="field-type">[String]</span></div>
+              <div class="field"><span>imagen_url</span><span class="field-type">String</span></div>
+              <div class="field"><span>autor_id</span><span class="field-type">Number (ref MySQL)</span></div>
+              <div class="field"><span>vistas</span><span class="field-type">Number</span></div>
+              <div class="field"><span>publicado</span><span class="field-type">Boolean</span></div>
+              <div class="field"><span>created_at</span><span class="field-type">Date</span></div>
+            </div>
+          </div>
+
+          <div class="entity">
+            <div class="entity-name">comentarios</div>
+            <div class="entity-fields">
+              <div class="field"><span class="field-pk">_id</span><span class="field-type">ObjectId</span></div>
+              <div class="field"><span class="field-fk">noticia_id</span><span class="field-type">ObjectId → noticias</span></div>
+              <div class="field"><span>autor_id</span><span class="field-type">Number (ref MySQL)</span></div>
+              <div class="field"><span>texto</span><span class="field-type">String</span></div>
+              <div class="field"><span>created_at</span><span class="field-type">Date</span></div>
+            </div>
+          </div>
+
+          <div style="margin-top: 1rem; padding: 0.75rem; background: rgba(16,185,129,0.08); border: 1px solid rgba(16,185,129,0.2); border-radius: 8px;">
+            <p style="font-size: 0.78rem; color: #6ee7b7; margin: 0; font-style: italic;">
+              💡 <strong>Justificación:</strong> Las noticias tienen estructura variable (a veces tienen galería, a veces no; diferentes tipos de metadatos), lo que hace MongoDB ideal. Los datos de usuario se referencian por ID desde MySQL.
+            </p>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. STACK TECNOLÓGICO -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">04</div>
+      <h2>Stack Tecnológico</h2>
+    </div>
+
+    <div class="two-col">
+      <div>
+        <h3>Backend</h3>
+        <div class="stack-row">
+          <div class="stack-icon box-green">⚙️</div>
+          <div>
+            <div class="stack-name">Node.js + Express</div>
+            <div class="stack-desc">API REST, manejo de rutas y middlewares</div>
+          </div>
+        </div>
+        <div class="stack-row">
+          <div class="stack-icon box-yellow">🐬</div>
+          <div>
+            <div class="stack-name">MySQL + Sequelize</div>
+            <div class="stack-desc">ORM para datos relacionales (usuarios, proyectos)</div>
+          </div>
+        </div>
+        <div class="stack-row">
+          <div class="stack-icon box-green">🍃</div>
+          <div>
+            <div class="stack-name">MongoDB + Mongoose</div>
+            <div class="stack-desc">ODM para contenido flexible (noticias)</div>
+          </div>
+        </div>
+        <div class="stack-row">
+          <div class="stack-icon box-purple">🔐</div>
+          <div>
+            <div class="stack-name">JWT + Bcrypt</div>
+            <div class="stack-desc">Autenticación y seguridad</div>
+          </div>
+        </div>
+        <div class="stack-row">
+          <div class="stack-icon box-blue">📧</div>
+          <div>
+            <div class="stack-name">Nodemailer</div>
+            <div class="stack-desc">Notificaciones por correo electrónico</div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <h3>Frontend</h3>
+        <div class="stack-row">
+          <div class="stack-icon box-blue">⚛️</div>
+          <div>
+            <div class="stack-name">React + Vite</div>
+            <div class="stack-desc">SPA moderna y rápida</div>
+          </div>
+        </div>
+        <div class="stack-row">
+          <div class="stack-icon box-purple">🧭</div>
+          <div>
+            <div class="stack-name">React Router DOM</div>
+            <div class="stack-desc">Navegación entre vistas</div>
+          </div>
+        </div>
+        <div class="stack-row">
+          <div class="stack-icon box-yellow">📊</div>
+          <div>
+            <div class="stack-name">Recharts</div>
+            <div class="stack-desc">Gráficos de progreso en el dashboard</div>
+          </div>
+        </div>
+        <div class="stack-row">
+          <div class="stack-icon box-green">🎨</div>
+          <div>
+            <div class="stack-name">TailwindCSS</div>
+            <div class="stack-desc">Estilos responsivos y modernos</div>
+          </div>
+        </div>
+        <div class="stack-row">
+          <div class="stack-icon box-blue">🔄</div>
+          <div>
+            <div class="stack-name">Axios</div>
+            <div class="stack-desc">Peticiones HTTP al backend</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. MÓDULOS -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">05</div>
+      <h2>Módulos del Sistema</h2>
+    </div>
+
+    <div class="three-col">
+      <div class="card">
+        <div class="card-title">🔐 Autenticación</div>
+        <p>Login, registro, recuperación de contraseña. Roles: Estudiante, Docente, Administrador. JWT con expiración.</p>
+      </div>
+      <div class="card">
+        <div class="card-title">📁 Proyectos</div>
+        <p>CRUD de proyectos académicos. Asignación de estudiantes. Estado: activo, pausado, finalizado.</p>
+      </div>
+      <div class="card">
+        <div class="card-title">✅ Tareas</div>
+        <p>Subtareas dentro de proyectos. Asignación individual. Prioridad y fecha límite. Cambio de estado.</p>
+      </div>
+      <div class="card">
+        <div class="card-title">📊 Dashboard</div>
+        <p>Gráficos de progreso por proyecto. Tareas completadas vs pendientes. Estadísticas del usuario.</p>
+      </div>
+      <div class="card">
+        <div class="card-title">📰 Noticias</div>
+        <p>Portal de anuncios y noticias institucionales. Categorías, etiquetas, búsqueda. Administrado por docentes/admin.</p>
+      </div>
+      <div class="card">
+        <div class="card-title">📧 Notificaciones</div>
+        <p>Emails automáticos al asignar tareas, fechas próximas a vencer, y cuando se publica una noticia relevante.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. COBERTURA POR MATERIA -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">06</div>
+      <h2>Cobertura por Materia</h2>
+    </div>
+
+    <div class="three-col">
+      <div class="materia-card materia-bd">
+        <div class="materia-label" style="color: #93c5fd;">Base de Datos</div>
+        <div class="materia-title">Arquitectura Híbrida</div>
+        <ul class="check-list">
+          <li>Diseño ER completo en MySQL</li>
+          <li>Esquemas Mongoose en MongoDB</li>
+          <li>Justificación de cada BD</li>
+          <li>Relaciones entre tablas (FK)</li>
+          <li>Índices y optimización</li>
+          <li>Transacciones en MySQL</li>
+        </ul>
+      </div>
+
+      <div class="materia-card materia-nt">
+        <div class="materia-label" style="color: #6ee7b7;">Nuevas Tecnologías</div>
+        <div class="materia-title">Stack Moderno</div>
+        <ul class="check-list">
+          <li>API REST con Node.js</li>
+          <li>Doble conexión a BD</li>
+          <li>JWT para autenticación</li>
+          <li>Frontend en React + Vite</li>
+          <li>Integración Nodemailer</li>
+          <li>Despliegue en Railway/Render</li>
+        </ul>
+      </div>
+
+      <div class="materia-card materia-di">
+        <div class="materia-label" style="color: #fcd34d;">Diseño de Interfaces</div>
+        <div class="materia-title">UI/UX Completo</div>
+        <ul class="check-list">
+          <li>Dashboard con gráficos</li>
+          <li>Diseño responsivo</li>
+          <li>Sistema de navegación por roles</li>
+          <li>Portal de noticias visual</li>
+          <li>Componentes reutilizables</li>
+          <li>Paleta de colores coherente</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- 7. PLAN DE TRABAJO -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">07</div>
+      <h2>Plan de Trabajo Sugerido</h2>
+    </div>
+
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-week">Semana 1</div>
+        <div class="timeline-title">Configuración base</div>
+        <div class="timeline-desc">Setup Node.js + Express. Conexión dual MySQL + MongoDB. Modelos y migraciones. Variables de entorno.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-week">Semana 2</div>
+        <div class="timeline-title">Autenticación + API Core</div>
+        <div class="timeline-desc">Registro/login con JWT. CRUD de proyectos y tareas. Rutas protegidas por rol. Pruebas con Postman.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-week">Semana 3</div>
+        <div class="timeline-title">Módulo de Noticias + Emails</div>
+        <div class="timeline-desc">API de noticias con MongoDB. Búsqueda y filtros. Integración Nodemailer. Notificaciones automáticas.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-week">Semana 4</div>
+        <div class="timeline-title">Frontend React</div>
+        <div class="timeline-desc">Login, dashboard con gráficos (Recharts), vistas por rol, portal de noticias, componentes responsivos.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot" style="background: var(--accent2);"></div>
+        <div class="timeline-week">Semana 5</div>
+        <div class="timeline-title">Pulido y Despliegue</div>
+        <div class="timeline-desc">Pruebas de integración, corrección de bugs, despliegue backend en Railway, frontend en Vercel/Netlify.</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>

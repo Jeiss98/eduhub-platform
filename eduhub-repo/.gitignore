@@ -1,0 +1,42 @@
+# ─── Node ───────────────────────────────
+node_modules/
+npm-debug.log*
+yarn-error.log
+.pnp/
+.pnp.js
+
+# ─── Build ──────────────────────────────
+dist/
+build/
+.next/
+out/
+
+# ─── Entorno ────────────────────────────
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# ─── Bases de datos locales ─────────────
+*.sqlite
+*.db
+
+# ─── Editores / IDEs ────────────────────
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# ─── Logs ───────────────────────────────
+logs/
+*.log
+
+# ─── Dependencias Python ────────────────
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/

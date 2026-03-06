@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>EduHub — Plataforma Académica</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --brand:#2563EB;--brand-l:#EFF6FF;--brand-m:#BFDBFE;--brand-d:#1E40AF;
+  --green:#10B981;--green-b:#ECFDF5;
+  --amber:#F59E0B;--amber-b:#FFFBEB;
+  --red:#EF4444;--red-b:#FEF2F2;
+  --violet:#7C3AED;--violet-b:#F5F3FF;
+  --bg:#F8FAFC;--srf:#FFFFFF;--srf2:#F1F5F9;
+  --brd:#E2E8F0;--brd2:#CBD5E1;
+  --txt:#0F172A;--txt2:#475569;--txt3:#94A3B8;
+  --font:'Plus Jakarta Sans',sans-serif;
+  --mono:'Fira Code',monospace;
+  --r:10px;--rl:16px;--rxl:20px;
+  --sh:0 1px 3px rgba(0,0,0,.06),0 1px 2px rgba(0,0,0,.04);
+  --shm:0 4px 16px rgba(0,0,0,.07);
+  --shl:0 8px 32px rgba(0,0,0,.10);
+}
+body{font-family:var(--font);background:var(--bg);color:var(--txt);min-height:100vh;-webkit-font-smoothing:antialiased}
+.page{display:none}.page.active{display:flex}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.fu{animation:fadeUp .35s ease both}
+.fu2{animation:fadeUp .35s .07s ease both}
+.fu3{animation:fadeUp .35s .14s ease both}
+.fu4{animation:fadeUp .35s .21s ease both}
+
+/* AUTH */
+#page-auth{min-height:100vh;align-items:stretch}
+.a-left{
+  flex:1;
+  background:linear-gradient(140deg,#1E3A8A 0%,#1D4ED8 55%,#2563EB 100%);
+  display:flex;flex-direction:column;justify-content:center;
+  padding:4rem 5rem;position:relative;overflow:hidden;
+}
+.a-left::before{
+  content:'';position:absolute;inset:0;
+  background-image:radial-gradient(rgba(255,255,255,.1) 1.5px,transparent 1.5px);
+  background-size:28px 28px;
+}
+.a-left::after{
+  content:'';position:absolute;bottom:-120px;right:-80px;
+  width:380px;height:380px;border-radius:50%;
+  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);
+}
+.a-deco{
+  position:absolute;top:-80px;left:-60px;
+  width:280px;height:280px;border-radius:50%;
+  background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);
+}
+.a-brand{display:flex;align-items:center;gap:12px;margin-bottom:3rem;position:relative;z-index:1}
+.a-logo{
+  width:42px;height:42px;background:rgba(255,255,255,.15);
+  border:1.5px solid rgba(255,255,255,.3);border-radius:12px;
+  display:grid;place-items:center;font-size:1.1rem;font-weight:800;color:#fff;
+}
+.a-bname{font-size:1.35rem;font-weight:800;color:#fff;letter-spacing:-.03em}
+.a-h1{font-size:clamp(2rem,3.5vw,3rem);font-weight:800;line-height:1.15;letter-spacing:-.04em;color:#fff;margin-bottom:1.2rem;position:relative;z-index:1}
+.a-h1 em{font-style:normal;color:#93C5FD}
+.a-sub{font-size:.93rem;color:rgba(255,255,255,.72);line-height:1.7;max-width:400px;margin-bottom:2.5rem;position:relative;z-index:1}
+.a-pills{display:flex;flex-direction:column;gap:9px;position:relative;z-index:1}
+.a-pill{
+  display:flex;align-items:center;gap:9px;
+  background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);
+  border-radius:100px;padding:.5rem .9rem;font-size:.8rem;color:rgba(255,255,255,.9);
+  width:fit-content;
+}
+.a-dot{width:7px;height:7px;border-radius:50%;background:#6EE7B7;flex-shrink:0}
+
+.a-right{
+  width:450px;flex-shrink:0;background:var(--srf);
+  display:flex;align-items:center;justify-content:center;
+  padding:3rem 3.25rem;border-left:1px solid var(--brd);
+}
+.a-card{width:100%}
+.a-tabs{
+  display:flex;background:var(--srf2);border-radius:var(--r);
+  padding:4px;margin-bottom:1.8rem;gap:4px;
+}
+.a-tab{
+  flex:1;padding:.5rem 0;text-align:center;font-size:.83rem;font-weight:600;
+  border-radius:calc(var(--r) - 2px);cursor:pointer;border:none;
+  background:transparent;color:var(--txt3);transition:all .18s;font-family:var(--font);
+}
+.a-tab.on{background:var(--srf);color:var(--brand);box-shadow:var(--sh)}
+.fp{display:none}.fp.on{display:block}
+.ft{font-size:1.3rem;font-weight:800;letter-spacing:-.03em;margin-bottom:.3rem}
+.fs{font-size:.82rem;color:var(--txt2);margin-bottom:1.5rem}
+
+/* alert */
+.al{padding:.6rem .9rem;border-radius:var(--r);font-size:.8rem;font-weight:500;margin-bottom:.9rem;display:none}
+.al.on{display:flex;align-items:center;gap:7px}
+.al-ok{background:var(--green-b);color:#065F46;border:1px solid #A7F3D0}
+.al-er{background:var(--red-b);color:#991B1B;border:1px solid #FCA5A5}
+
+/* fields */
+.fld{margin-bottom:.85rem}
+label{display:block;font-size:.72rem;font-weight:700;color:var(--txt2);letter-spacing:.05em;text-transform:uppercase;margin-bottom:4px}
+input,select{
+  width:100%;background:var(--bg);border:1.5px solid var(--brd);color:var(--txt);
+  font-family:var(--font);font-size:.87rem;padding:.62rem .88rem;border-radius:var(--r);
+  outline:none;transition:border-color .15s,box-shadow .15s;
+}
+input::placeholder{color:var(--txt3)}
+input:focus,select:focus{border-color:var(--brand);box-shadow:0 0 0 3px rgba(37,99,235,.11);background:var(--srf)}
+input.er{border-color:var(--red)}
+.fe{font-size:.7rem;color:var(--red);margin-top:3px;display:none}.fe.on{display:block}
+.pw{position:relative}.pw input{padding-right:2.5rem}
+.pt{position:absolute;right:10px;top:50%;transform:translateY(-50%);cursor:pointer;color:var(--txt3);font-size:.82rem;user-select:none;transition:color .14s}
+.pt:hover{color:var(--brand)}
+.rg{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}
+.rc{border:1.5px solid var(--brd);background:var(--bg);border-radius:var(--r);padding:.7rem .4rem;text-align:center;cursor:pointer;transition:all .14s}
+.rc:hover{border-color:var(--brand-m)}
+.rc.on{border-color:var(--brand);background:var(--brand-l)}
+.ri{font-size:1.4rem;display:block;margin-bottom:2px}
+.rl{font-size:.65rem;font-weight:700;color:var(--txt2);text-transform:uppercase;letter-spacing:.04em}
+.sep{display:flex;align-items:center;gap:.7rem;margin:.9rem 0;color:var(--txt3);font-size:.72rem}
+.sep::before,.sep::after{content:'';flex:1;height:1px;background:var(--brd)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:.62rem 1.1rem;border-radius:var(--r);font-family:var(--font);font-size:.85rem;font-weight:600;cursor:pointer;border:none;transition:all .14s}
+.bp{background:var(--brand);color:#fff;width:100%}
+.bp:hover{background:var(--brand-d);box-shadow:0 4px 14px rgba(37,99,235,.28)}
+.bg{background:var(--srf2);color:var(--txt2);border:1px solid var(--brd);flex:1;font-size:.76rem}
+.bg:hover{background:var(--brd);color:var(--txt)}
+.qr{display:flex;gap:5px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+
+/* DASHBOARD */
+#page-dashboard{flex-direction:row;min-height:100vh}
+
+/* sidebar */
+.sb{width:215px;flex-shrink:0;background:var(--txt);display:flex;flex-direction:column;height:100vh;position:sticky;top:0}
+.sb-brand{padding:1.3rem 1.15rem;display:flex;align-items:center;gap:9px;border-bottom:1px solid rgba(255,255,255,.08)}
+.sb-logo{width:30px;height:30px;background:var(--brand);border-radius:7px;display:grid;place-items:center;font-weight:800;font-size:.85rem;color:#fff}
+.sb-name{font-size:.92rem;font-weight:800;color:#fff;letter-spacing:-.02em}
+.sb-nav{flex:1;padding:.5rem;overflow-y:auto}
+.sb-lbl{font-size:.58rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.28);padding:.55rem .6rem .15rem;margin-top:.2rem}
+.sb-i{display:flex;align-items:center;gap:8px;padding:.5rem .7rem;border-radius:7px;font-size:.8rem;font-weight:500;cursor:pointer;color:rgba(255,255,255,.48);border:none;background:none;width:100%;text-align:left;font-family:var(--font);transition:all .13s;margin-bottom:1px}
+.sb-i:hover{background:rgba(255,255,255,.07);color:rgba(255,255,255,.82)}
+.sb-i.on{background:rgba(37,99,235,.35);color:#93C5FD}
+.sb-ic{width:17px;text-align:center;font-size:.88rem;opacity:.75}
+.sb-bdg{margin-left:auto;background:var(--brand);color:#fff;font-size:.58rem;font-weight:700;padding:1px 6px;border-radius:100px}
+.sb-usr{padding:.9rem 1.15rem;border-top:1px solid rgba(255,255,255,.08);display:flex;align-items:center;gap:9px}
+.sb-av{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--brand),var(--violet));display:grid;place-items:center;font-weight:700;font-size:.75rem;color:#fff;flex-shrink:0}
+.sb-un{font-size:.76rem;font-weight:600;color:rgba(255,255,255,.82)}
+.sb-ur{font-size:.63rem;color:rgba(255,255,255,.38)}
+.sb-lo{margin-left:auto;background:none;border:none;color:rgba(255,255,255,.28);cursor:pointer;font-size:.82rem;padding:3px;border-radius:5px;transition:all .13s}
+.sb-lo:hover{color:var(--red);background:rgba(239,68,68,.14)}
+
+/* main */
+.mn{flex:1;overflow-y:auto;min-width:0}
+.tb{position:sticky;top:0;background:rgba(248,250,252,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--brd);padding:.85rem 1.6rem;display:flex;justify-content:space-between;align-items:center;z-index:20}
+.tb-t{font-size:.92rem;font-weight:800;letter-spacing:-.02em}
+.tb-s{font-size:.7rem;color:var(--txt3);margin-top:1px}
+.tb-a{display:flex;gap:5px}
+.ib{width:32px;height:32px;border-radius:var(--r);background:var(--srf);border:1px solid var(--brd);display:grid;place-items:center;cursor:pointer;font-size:.8rem;color:var(--txt2);transition:all .13s}
+.ib:hover{border-color:var(--brand);color:var(--brand)}
+
+/* sections */
+.sc{display:none;padding:1.4rem 1.6rem}.sc.on{display:block}
+
+/* stats */
+.sr{display:grid;grid-template-columns:repeat(4,1fr);gap:11px;margin-bottom:1.2rem}
+.st{background:var(--srf);border:1px solid var(--brd);border-radius:var(--rl);padding:1.1rem 1.15rem;box-shadow:var(--sh);transition:box-shadow .18s}
+.st:hover{box-shadow:var(--shm)}
+.st-t{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px}
+.st-l{font-size:.63rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--txt3)}
+.st-ic{width:32px;height:32px;border-radius:8px;display:grid;place-items:center;font-size:.9rem}
+.st-v{font-size:1.85rem;font-weight:800;letter-spacing:-.05em;line-height:1;margin-bottom:4px}
+.st-tr{font-size:.7rem;color:var(--green);font-weight:500}
+
+/* card */
+.cd{background:var(--srf);border:1px solid var(--brd);border-radius:var(--rl);box-shadow:var(--sh);overflow:hidden}
+.cd-h{padding:.9rem 1.15rem;border-bottom:1px solid var(--brd);display:flex;justify-content:space-between;align-items:center}
+.cd-t{font-size:.85rem;font-weight:700}
+.cd-b{padding:1rem 1.15rem}
+.c2{display:grid;grid-template-columns:1.55fr 1fr;gap:13px;margin-bottom:13px}
+.c3{display:grid;grid-template-columns:repeat(3,1fr);gap:11px}
+
+/* progress */
+.pi{margin-bottom:.85rem}.pi:last-child{margin-bottom:0}
+.pr{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px}
+.pn{font-size:.78rem;font-weight:600}
+.pp{font-size:.73rem;font-weight:700;color:var(--brand);font-family:var(--mono)}
+.pb{height:5px;background:var(--srf2);border-radius:100px;overflow:hidden}
+.pf{height:100%;border-radius:100px;transition:width .5s ease}
+
+/* tasks */
+.tk{display:flex;align-items:center;gap:10px;padding:.6rem 0;border-bottom:1px solid var(--brd)}
+.tk:last-child{border-bottom:none}
+.tkc{width:17px;height:17px;border:2px solid var(--brd2);border-radius:4px;flex-shrink:0;cursor:pointer;display:grid;place-items:center;font-size:.6rem;transition:all .14s}
+.tkc.dn{background:var(--green);border-color:var(--green);color:#fff}
+.tkt{flex:1;font-size:.8rem;font-weight:500}
+.tkt.dn{text-decoration:line-through;color:var(--txt3)}
+.tkp{font-size:.67rem;color:var(--txt3)}
+
+/* badges */
+.bdg{display:inline-flex;align-items:center;padding:2px 8px;border-radius:100px;font-size:.63rem;font-weight:700;letter-spacing:.02em;white-space:nowrap}
+.bg-g{background:var(--green-b);color:#065F46}
+.bg-a{background:var(--amber-b);color:#92400E}
+.bg-b{background:var(--brand-l);color:var(--brand-d)}
+.bg-r{background:var(--red-b);color:#991B1B}
+.bg-v{background:var(--violet-b);color:#5B21B6}
+
+/* project cards */
+.pc{background:var(--srf);border:1px solid var(--brd);border-radius:var(--rl);padding:1.1rem;box-shadow:var(--sh);transition:box-shadow .17s,transform .17s;cursor:pointer}
+.pc:hover{box-shadow:var(--shm);transform:translateY(-2px)}
+.pc-t{font-size:.88rem;font-weight:700;margin-bottom:2px}
+.pc-m{font-size:.7rem;color:var(--txt3);margin-bottom:11px}
+
+/* ─── NEWS SECTION ─── */
+.nf{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:1.2rem}
+.nfb{padding:.38rem .85rem;border-radius:100px;font-size:.74rem;font-weight:600;border:1.5px solid var(--brd);background:var(--srf);color:var(--txt2);cursor:pointer;transition:all .13s;font-family:var(--font)}
+.nfb:hover{border-color:var(--brand);color:var(--brand)}
+.nfb.on{background:var(--brand);border-color:var(--brand);color:#fff}
+
+/* news grid */
+.ng{display:grid;grid-template-columns:repeat(3,1fr);grid-auto-rows:auto;gap:13px}
+
+/* news card */
+.nc{background:var(--srf);border:1px solid var(--brd);border-radius:var(--rxl);overflow:hidden;box-shadow:var(--sh);transition:box-shadow .2s,transform .2s;cursor:pointer;display:flex;flex-direction:column}
+.nc:hover{box-shadow:var(--shl);transform:translateY(-3px)}
+.nc.big{grid-column:span 2;flex-direction:row}
+.nc.tall{grid-row:span 2}
+.ni{flex-shrink:0;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.nc .ni{height:130px}
+.nc.tall .ni{height:190px}
+.nc.big .ni{width:210px;height:auto;min-height:170px}
+.ni.c1{background:linear-gradient(135deg,#DBEAFE,#BFDBFE)}
+.ni.c2{background:linear-gradient(135deg,#D1FAE5,#A7F3D0)}
+.ni.c3{background:linear-gradient(135deg,#FEF3C7,#FDE68A)}
+.ni.c4{background:linear-gradient(135deg,#EDE9FE,#DDD6FE)}
+.ni.c5{background:linear-gradient(135deg,#FCE7F3,#FBCFE8)}
+.ni.c6{background:linear-gradient(135deg,#CFFAFE,#A5F3FC)}
+.ne{font-size:2.6rem;filter:drop-shadow(0 2px 5px rgba(0,0,0,.1))}
+.nc.big .ne{font-size:3.2rem}
+.nc.tall .ne{font-size:3rem}
+.nn{position:absolute;top:9px;left:9px;background:var(--brand);color:#fff;font-size:.58rem;font-weight:700;padding:2px 7px;border-radius:100px;letter-spacing:.04em}
+.nb{padding:.9rem 1rem;flex:1;display:flex;flex-direction:column}
+.nc.big .nb{padding:1.1rem 1.25rem;justify-content:center}
+.ncat{font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--brand);margin-bottom:5px}
+.nc.big .ncat{font-size:.66rem}
+.ntit{font-size:.85rem;font-weight:700;line-height:1.4;color:var(--txt);margin-bottom:7px;flex:1}
+.nc.big .ntit{font-size:1.05rem;line-height:1.35}
+.nc.tall .ntit{font-size:.88rem}
+.nexc{font-size:.74rem;color:var(--txt2);line-height:1.6;margin-bottom:9px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.nft{display:flex;align-items:center;justify-content:space-between;margin-top:auto;padding-top:7px;border-top:1px solid var(--brd)}
+.nm{font-size:.66rem;color:var(--txt3)}
+.nv{font-size:.66rem;color:var(--txt3);font-family:var(--mono)}
+
+/* profile */
+.fsc{background:var(--srf);border:1px solid var(--brd);border-radius:var(--rl);overflow:hidden;margin-bottom:13px;box-shadow:var(--sh)}
+.fsh{padding:.85rem 1.15rem;border-bottom:1px solid var(--brd);font-size:.85rem;font-weight:700}
+.fsb{padding:1rem 1.15rem}
+
+/* toast */
+.toast{position:fixed;bottom:1.4rem;right:1.4rem;background:var(--txt);color:#fff;padding:.7rem 1rem;border-radius:var(--r);font-size:.81rem;font-weight:500;box-shadow:var(--shl);transform:translateY(70px);opacity:0;transition:all .26s cubic-bezier(.34,1.56,.64,1);z-index:999;max-width:300px}
+.toast.on{transform:translateY(0);opacity:1}
+
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--brd2);border-radius:100px}
+
+@media(max-width:900px){
+  .a-left{display:none}.a-right{width:100%;border-left:none}
+  .sr{grid-template-columns:1fr 1fr}.c2,.c3{grid-template-columns:1fr}
+  .ng{grid-template-columns:1fr 1fr}.nc.big{grid-column:span 2;flex-direction:column}
+  .nc.big .ni{width:100%;height:150px}
+}
+@media(max-width:640px){
+  .sb{display:none}.sr{grid-template-columns:1fr}
+  .ng{grid-template-columns:1fr}.nc.big,.nc.tall{grid-column:span 1;grid-row:span 1}
+}
+</style>
+</head>
+<body>
+
+<!-- AUTH -->
+<div id="page-auth" class="page active">
+  <div class="a-left">
+    <div class="a-deco"></div>
+    <div class="a-brand fu">
+      <div class="a-logo">E</div>
+      <span class="a-bname">EduHub</span>
+    </div>
+    <h1 class="a-h1 fu2">Gestiona tus<br>proyectos<br><em>académicos</em></h1>
+    <p class="a-sub fu3">Una sola plataforma para estudiantes, docentes y administradores. Organiza, evalúa y mantente al día.</p>
+    <div class="a-pills fu4">
+      <div class="a-pill"><span class="a-dot"></span> Gestión de proyectos y tareas</div>
+      <div class="a-pill"><span class="a-dot"></span> Seguimiento de avance en tiempo real</div>
+      <div class="a-pill"><span class="a-dot"></span> Portal de noticias institucionales</div>
+      <div class="a-pill"><span class="a-dot"></span> Roles: estudiante · docente · admin</div>
+    </div>
+  </div>
+
+  <div class="a-right">
+    <div class="a-card">
+      <div class="a-tabs">
+        <button class="a-tab on" onclick="sTab('login')">Iniciar sesión</button>
+        <button class="a-tab"   onclick="sTab('reg')">Registrarse</button>
+      </div>
+
+      <!-- LOGIN -->
+      <div id="fp-login" class="fp on">
+        <h2 class="ft">Bienvenido de vuelta</h2>
+        <p class="fs">Ingresa tus credenciales para continuar.</p>
+        <div id="la" class="al"></div>
+        <div class="fld">
+          <label for="le">Correo electrónico</label>
+          <input type="email" id="le" placeholder="tu@correo.com"/>
+          <span class="fe" id="ele">Correo inválido.</span>
+        </div>
+        <div class="fld">
+          <label for="lp">Contraseña</label>
+          <div class="pw"><input type="password" id="lp" placeholder="••••••••"/>
+          <span class="pt" onclick="tp('lp',this)">👁</span></div>
+          <span class="fe" id="elp">Contraseña requerida.</span>
+        </div>
+        <button class="btn bp" style="margin-top:.35rem" onclick="doLogin()">Ingresar a EduHub →</button>
+        <div class="sep">o accede rápido como</div>
+        <div class="qr">
+          <button class="btn bg" onclick="quick('estudiante')">👨‍🎓 Estudiante</button>
+          <button class="btn bg" onclick="quick('docente')">👩‍🏫 Docente</button>
+          <button class="btn bg" onclick="quick('admin')">🛡 Admin</button>
+        </div>
+      </div>
+
+      <!-- REGISTRO -->
+      <div id="fp-reg" class="fp">
+        <h2 class="ft">Crear cuenta</h2>
+        <p class="fs">Completa el formulario para registrarte.</p>
+        <div id="ra" class="al"></div>
+        <div class="g2">
+          <div class="fld">
+            <label for="rn">Nombre</label>
+            <input type="text" id="rn" placeholder="Juan"/>
+            <span class="fe" id="ern">Requerido.</span>
+          </div>
+          <div class="fld">
+            <label for="rap">Apellido</label>
+            <input type="text" id="rap" placeholder="García"/>
+          </div>
+        </div>
+        <div class="fld">
+          <label for="rem">Correo</label>
+          <input type="email" id="rem" placeholder="tu@correo.com"/>
+          <span class="fe" id="erem">Correo inválido.</span>
+        </div>
+        <div class="g2">
+          <div class="fld">
+            <label for="rp">Contraseña</label>
+            <div class="pw"><input type="password" id="rp" placeholder="Mín. 8 car."/>
+            <span class="pt" onclick="tp('rp',this)">👁</span></div>
+            <span class="fe" id="erp">Mín. 8 caracteres.</span>
+          </div>
+          <div class="fld">
+            <label for="rp2">Confirmar</label>
+            <div class="pw"><input type="password" id="rp2" placeholder="Repite"/></div>
+            <span class="fe" id="erp2">No coinciden.</span>
+          </div>
+        </div>
+        <div class="fld">
+          <label>Rol</label>
+          <div class="rg">
+            <div class="rc on" onclick="sRol(this,'estudiante')"><span class="ri">👨‍🎓</span><span class="rl">Estudiante</span></div>
+            <div class="rc"    onclick="sRol(this,'docente')"><span class="ri">👩‍🏫</span><span class="rl">Docente</span></div>
+            <div class="rc"    onclick="sRol(this,'admin')"><span class="ri">🛡</span><span class="rl">Admin</span></div>
+          </div>
+        </div>
+        <button class="btn bp" style="margin-top:.7rem" onclick="doReg()">Crear cuenta →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div id="page-dashboard" class="page">
+  <aside class="sb">
+    <div class="sb-brand">
+      <div class="sb-logo">E</div>
+      <span class="sb-name">EduHub</span>
+    </div>
+    <nav class="sb-nav">
+      <span class="sb-lbl">Principal</span>
+      <button class="sb-i on" onclick="gSec('inicio',this)"><span class="sb-ic">◈</span> Dashboard</button>
+      <button class="sb-i"    onclick="gSec('proyectos',this)"><span class="sb-ic">⬡</span> Proyectos<span class="sb-bdg">4</span></button>
+      <button class="sb-i"    onclick="gSec('tareas',this)"><span class="sb-ic">◇</span> Mis Tareas<span class="sb-bdg">4</span></button>
+      <span class="sb-lbl">Contenido</span>
+      <button class="sb-i"    onclick="gSec('noticias',this)"><span class="sb-ic">◉</span> Noticias</button>
+      <span class="sb-lbl">Cuenta</span>
+      <button class="sb-i"    onclick="gSec('perfil',this)"><span class="sb-ic">◎</span> Mi Perfil</button>
+    </nav>
+    <div class="sb-usr">
+      <div class="sb-av" id="sbav">ES</div>
+      <div><div class="sb-un" id="sbnm">Estudiante</div><div class="sb-ur" id="sbrl">Alumno</div></div>
+      <button class="sb-lo" onclick="logout()" title="Salir">✕</button>
+    </div>
+  </aside>
+
+  <main class="mn">
+    <div class="tb">
+      <div><div class="tb-t" id="tbt">Dashboard</div><div class="tb-s">Martes, 3 de Marzo 2026</div></div>
+      <div class="tb-a">
+        <div class="ib" onclick="tst('🔔 Sin notificaciones nuevas')">🔔</div>
+        <div class="ib" onclick="tst('⚙️ Configuración próximamente')">⚙</div>
+      </div>
+    </div>
+
+    <!-- INICIO -->
+    <section id="sc-inicio" class="sc on">
+      <div class="sr fu">
+        <div class="st">
+          <div class="st-t"><span class="st-l">Proyectos activos</span><div class="st-ic" style="background:var(--brand-l)">⬡</div></div>
+          <div class="st-v" style="color:var(--brand)">2</div>
+          <div class="st-tr">↑ 1 nuevo este mes</div>
+        </div>
+        <div class="st">
+          <div class="st-t"><span class="st-l">Tareas pendientes</span><div class="st-ic" style="background:var(--amber-b)">◇</div></div>
+          <div class="st-v" style="color:var(--amber)">4</div>
+          <div class="st-tr" style="color:var(--amber)">2 próximas a vencer</div>
+        </div>
+        <div class="st">
+          <div class="st-t"><span class="st-l">Completadas</span><div class="st-ic" style="background:var(--green-b)">✓</div></div>
+          <div class="st-v" style="color:var(--green)">30</div>
+          <div class="st-tr">+5 esta semana</div>
+        </div>
+        <div class="st">
+          <div class="st-t"><span class="st-l">Promedio general</span><div class="st-ic" style="background:var(--violet-b)">★</div></div>
+          <div class="st-v" style="color:var(--violet)">8.7</div>
+          <div class="st-tr" style="color:var(--violet)">Sobre 10 pts</div>
+        </div>
+      </div>
+
+      <div class="c2 fu2">
+        <div class="cd">
+          <div class="cd-h"><span class="cd-t">Avance de proyectos</span>
+            <button class="btn bg" style="padding:.28rem .65rem;font-size:.7rem;" onclick="gSec('proyectos',document.querySelectorAll('.sb-i')[1])">Ver todos</button>
+          </div>
+          <div class="cd-b">
+            <div class="pi"><div class="pr"><span class="pn">Análisis de Algoritmos</span><span class="pp">68%</span></div><div class="pb"><div class="pf" style="width:68%;background:linear-gradient(90deg,var(--brand),var(--violet))"></div></div></div>
+            <div class="pi"><div class="pr"><span class="pn">Diseño de BD Relacional</span><span class="pp">45%</span></div><div class="pb"><div class="pf" style="width:45%;background:linear-gradient(90deg,var(--green),var(--brand))"></div></div></div>
+            <div class="pi"><div class="pr"><span class="pn">App Móvil React Native</span><span class="pp" style="color:var(--amber)">20%</span></div><div class="pb"><div class="pf" style="width:20%;background:linear-gradient(90deg,var(--amber),#F97316)"></div></div></div>
+            <div class="pi"><div class="pr"><span class="pn">API REST con Node.js</span><span class="pp" style="color:var(--green)">100% ✓</span></div><div class="pb"><div class="pf" style="width:100%;background:var(--green)"></div></div></div>
+          </div>
+        </div>
+        <div class="cd">
+          <div class="cd-h"><span class="cd-t">Próximas tareas</span><span class="bdg bg-a">4 pendientes</span></div>
+          <div class="cd-b" style="padding-top:.35rem;padding-bottom:.35rem">
+            <div class="tk"><div class="tkc" onclick="tTk(this)"></div><div><div class="tkt">Análisis Big-O</div><div class="tkp">Análisis de Algoritmos</div></div><span class="bdg bg-r">alta</span></div>
+            <div class="tk"><div class="tkc" onclick="tTk(this)"></div><div><div class="tkt">Normalización 3FN</div><div class="tkp">Diseño de BD Relacional</div></div><span class="bdg bg-a">media</span></div>
+            <div class="tk"><div class="tkc dn" onclick="tTk(this)">✓</div><div><div class="tkt dn">Modelado ER</div><div class="tkp">Diseño de BD Relacional</div></div><span class="bdg bg-g">listo</span></div>
+            <div class="tk"><div class="tkc dn" onclick="tTk(this)">✓</div><div><div class="tkt dn">Endpoints JWT</div><div class="tkp">API REST con Node.js</div></div><span class="bdg bg-g">listo</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- mini news en inicio -->
+      <div class="cd fu3">
+        <div class="cd-h"><span class="cd-t">Noticias recientes</span>
+          <button class="btn bg" style="padding:.28rem .65rem;font-size:.7rem;" onclick="gSec('noticias',document.querySelectorAll('.sb-i')[3])">Ver todas</button>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:11px;padding:1rem 1.15rem">
+          <div class="nc" onclick="gSec('noticias',document.querySelectorAll('.sb-i')[3])"><div class="ni c1"><span class="ne">📅</span></div><div class="nb"><div class="ncat">Académico</div><div class="ntit">Semana de Proyectos Finales — Mayo 2026</div><div class="nft"><span class="nm">hace 2h</span><span class="nv">234 👁</span></div></div></div>
+          <div class="nc" onclick="gSec('noticias',document.querySelectorAll('.sb-i')[3])"><div class="ni c2"><span class="ne">🐳</span></div><div class="nb"><div class="ncat">Taller</div><div class="ntit">Taller gratuito de Docker este viernes</div><div class="nft"><span class="nm">hace 5h</span><span class="nv">189 👁</span></div></div></div>
+          <div class="nc" onclick="gSec('noticias',document.querySelectorAll('.sb-i')[3])"><div class="ni c4"><span class="ne">🤖</span></div><div class="nb"><div class="ncat">Infraestructura</div><div class="ntit">Nuevo laboratorio de IA disponible</div><div class="nft"><span class="nm">ayer</span><span class="nv">412 👁</span></div></div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROYECTOS -->
+    <section id="sc-proyectos" class="sc">
+      <div class="c3 fu">
+        <div class="pc"><div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:9px"><div><div class="pc-t">Análisis de Algoritmos</div><div class="pc-m">Prof. María García · 15 Mar 2026</div></div><span class="bdg bg-g">Activo</span></div><div class="pb" style="margin-bottom:7px"><div class="pf" style="width:68%;background:linear-gradient(90deg,var(--brand),var(--violet))"></div></div><div style="display:flex;justify-content:space-between;font-size:.7rem;color:var(--txt3)"><span>68% completado</span><span>8/12 tareas</span></div></div>
+        <div class="pc"><div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:9px"><div><div class="pc-t">Diseño de BD Relacional</div><div class="pc-m">Prof. María García · 01 Abr 2026</div></div><span class="bdg bg-g">Activo</span></div><div class="pb" style="margin-bottom:7px"><div class="pf" style="width:45%;background:linear-gradient(90deg,var(--green),var(--brand))"></div></div><div style="display:flex;justify-content:space-between;font-size:.7rem;color:var(--txt3)"><span>45% completado</span><span>4/9 tareas</span></div></div>
+        <div class="pc"><div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:9px"><div><div class="pc-t">App Móvil React Native</div><div class="pc-m">Prof. Carlos Ruiz · 20 Abr 2026</div></div><span class="bdg bg-a">Pausado</span></div><div class="pb" style="margin-bottom:7px"><div class="pf" style="width:20%;background:linear-gradient(90deg,var(--amber),#F97316)"></div></div><div style="display:flex;justify-content:space-between;font-size:.7rem;color:var(--txt3)"><span>20% completado</span><span>3/18 tareas</span></div></div>
+        <div class="pc"><div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:9px"><div><div class="pc-t">API REST con Node.js</div><div class="pc-m">Prof. Carlos Ruiz · 10 Feb 2026</div></div><span class="bdg bg-b">Finalizado</span></div><div class="pb" style="margin-bottom:7px"><div class="pf" style="width:100%;background:var(--green)"></div></div><div style="display:flex;justify-content:space-between;font-size:.7rem;color:var(--txt3)"><span style="color:var(--green)">100% ✓</span><span>15/15 tareas</span></div></div>
+      </div>
+    </section>
+
+    <!-- TAREAS -->
+    <section id="sc-tareas" class="sc">
+      <div class="cd fu">
+        <div class="cd-h"><span class="cd-t">Todas mis tareas</span><span class="bdg bg-a">4 pendientes</span></div>
+        <div style="padding:0 1.15rem">
+          <div class="tk"><div class="tkc" onclick="tTk(this)"></div><div style="flex:1"><div class="tkt">Análisis de complejidad Big-O</div><div class="tkp">Análisis de Algoritmos · 05 Mar</div></div><span class="bdg bg-r" style="margin-right:7px">alta</span><span style="font-size:.68rem;color:var(--txt3);font-family:var(--mono)">05/03</span></div>
+          <div class="tk"><div class="tkc" onclick="tTk(this)"></div><div style="flex:1"><div class="tkt">Implementar QuickSort en Java</div><div class="tkp">Análisis de Algoritmos · 08 Mar</div></div><span class="bdg bg-r" style="margin-right:7px">alta</span><span style="font-size:.68rem;color:var(--txt3);font-family:var(--mono)">08/03</span></div>
+          <div class="tk"><div class="tkc" onclick="tTk(this)"></div><div style="flex:1"><div class="tkt">Normalización hasta 3FN</div><div class="tkp">Diseño de BD Relacional · 10 Mar</div></div><span class="bdg bg-a" style="margin-right:7px">media</span><span style="font-size:.68rem;color:var(--txt3);font-family:var(--mono)">10/03</span></div>
+          <div class="tk"><div class="tkc" onclick="tTk(this)"></div><div style="flex:1"><div class="tkt">Conexión a MongoDB Atlas</div><div class="tkp">Diseño de BD Relacional · 18 Mar</div></div><span class="bdg bg-b" style="margin-right:7px">baja</span><span style="font-size:.68rem;color:var(--txt3);font-family:var(--mono)">18/03</span></div>
+          <div class="tk"><div class="tkc dn" onclick="tTk(this)">✓</div><div style="flex:1"><div class="tkt dn">Modelado Entidad-Relación</div><div class="tkp">Diseño de BD Relacional</div></div><span class="bdg bg-g">listo</span></div>
+          <div class="tk"><div class="tkc dn" onclick="tTk(this)">✓</div><div style="flex:1"><div class="tkt dn">Endpoints de autenticación JWT</div><div class="tkp">API REST con Node.js</div></div><span class="bdg bg-g">listo</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- NOTICIAS -->
+    <section id="sc-noticias" class="sc">
+      <div class="nf fu">
+        <button class="nfb on" onclick="fN(this)">Todas</button>
+        <button class="nfb"    onclick="fN(this)">Académico</button>
+        <button class="nfb"    onclick="fN(this)">Talleres</button>
+        <button class="nfb"    onclick="fN(this)">Infraestructura</button>
+        <button class="nfb"    onclick="fN(this)">Reconocimiento</button>
+      </div>
+
+      <div class="ng fu2">
+        <!-- GRANDE (2 cols) -->
+        <div class="nc big">
+          <div class="ni c1"><span class="ne">📅</span><span class="nn">Nuevo</span></div>
+          <div class="nb">
+            <div class="ncat">Académico</div>
+            <div class="ntit">Semana de Proyectos Finales — Fechas confirmadas para Mayo 2026</div>
+            <div class="nexc">La decanatura confirma las fechas para la sustentación. Todos los equipos deben tener al menos 80% de avance para el 30 de Abril.</div>
+            <div class="nft"><span class="nm">hace 2 horas · Prof. María García</span><span class="nv">234 👁</span></div>
+          </div>
+        </div>
+        <!-- normal -->
+        <div class="nc">
+          <div class="ni c2"><span class="ne">🐳</span></div>
+          <div class="nb">
+            <div class="ncat">Taller</div>
+            <div class="ntit">Taller gratuito de Docker para estudiantes este viernes</div>
+            <div class="nft"><span class="nm">hace 5 horas</span><span class="nv">189 👁</span></div>
+          </div>
+        </div>
+        <!-- ALTA (2 filas) -->
+        <div class="nc tall">
+          <div class="ni c4"><span class="ne">🤖</span><span class="nn">Nuevo</span></div>
+          <div class="nb">
+            <div class="ncat">Infraestructura</div>
+            <div class="ntit">Nuevo laboratorio de IA disponible para proyectos de grado</div>
+            <div class="nexc">El laboratorio cuenta con 20 estaciones con GPU NVIDIA RTX 4090, acceso a modelos de lenguaje locales y herramientas de machine learning. Disponible lunes a sábado en horario extendido.</div>
+            <div class="nft"><span class="nm">ayer · Admin</span><span class="nv">412 👁</span></div>
+          </div>
+        </div>
+        <!-- normal -->
+        <div class="nc">
+          <div class="ni c5"><span class="ne">🏆</span></div>
+          <div class="nb">
+            <div class="ncat">Reconocimiento</div>
+            <div class="ntit">Estudiantes ganan hackathon nacional 2026</div>
+            <div class="nft"><span class="nm">hace 3 días</span><span class="nv">891 👁</span></div>
+          </div>
+        </div>
+        <!-- normal -->
+        <div class="nc">
+          <div class="ni c3"><span class="ne">📊</span></div>
+          <div class="nb">
+            <div class="ncat">Académico</div>
+            <div class="ntit">Resultados del simulacro de parciales disponibles</div>
+            <div class="nft"><span class="nm">hace 4 días</span><span class="nv">320 👁</span></div>
+          </div>
+        </div>
+        <!-- GRANDE (2 cols) -->
+        <div class="nc big">
+          <div class="ni c6"><span class="ne">🎓</span></div>
+          <div class="nb">
+            <div class="ncat">Académico</div>
+            <div class="ntit">Convocatoria abierta: Becas de intercambio 2026-II</div>
+            <div class="nexc">15 cupos para intercambio en universidades de España, México y Argentina. Requisito: promedio superior a 3.8 y carta de motivación antes del 20 de Marzo.</div>
+            <div class="nft"><span class="nm">hace 5 días · Admin</span><span class="nv">1.2k 👁</span></div>
+          </div>
+        </div>
+        <!-- normal -->
+        <div class="nc">
+          <div class="ni c2"><span class="ne">🔐</span></div>
+          <div class="nb">
+            <div class="ncat">Infraestructura</div>
+            <div class="ntit">Actualización de política de contraseñas del campus</div>
+            <div class="nft"><span class="nm">hace 6 días</span><span class="nv">145 👁</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PERFIL -->
+    <section id="sc-perfil" class="sc">
+      <div style="max-width:540px">
+        <div class="fsc fu">
+          <div class="fsh">Información personal</div>
+          <div class="fsb">
+            <div class="g2">
+              <div class="fld"><label>Nombre</label><input type="text" value="Ana"/></div>
+              <div class="fld"><label>Apellido</label><input type="text" value="López"/></div>
+            </div>
+            <div class="fld"><label>Correo</label><input type="email" value="alopez@eduhub.com"/></div>
+            <div class="fld"><label>Rol</label><input type="text" value="Estudiante" readonly style="opacity:.5;cursor:not-allowed"/></div>
+            <button class="btn bp" style="width:auto;margin-top:.2rem" onclick="tst('✅ Perfil actualizado')">Guardar cambios</button>
+          </div>
+        </div>
+        <div class="fsc fu2">
+          <div class="fsh">Cambiar contraseña</div>
+          <div class="fsb">
+            <div class="fld"><label>Contraseña actual</label><input type="password" placeholder="••••••••"/></div>
+            <div class="g2">
+              <div class="fld"><label>Nueva</label><input type="password" placeholder="Mín. 8 car."/></div>
+              <div class="fld"><label>Confirmar</label><input type="password" placeholder="Repite"/></div>
+            </div>
+            <button class="btn bp" style="width:auto" onclick="tst('🔐 Contraseña actualizada')">Actualizar</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<div id="toel" class="toast"></div>
+
+<script>
+let rolVal='estudiante';
+function sTab(t){
+  document.querySelectorAll('.a-tab').forEach((e,i)=>e.classList.toggle('on',(t==='login'&&i===0)||(t==='reg'&&i===1)));
+  document.getElementById('fp-login').classList.toggle('on',t==='login');
+  document.getElementById('fp-reg').classList.toggle('on',t==='reg');
+}
+function tp(id,btn){const i=document.getElementById(id);i.type=i.type==='password'?'text':'password';btn.textContent=i.type==='password'?'👁':'🙈'}
+function sRol(el,r){document.querySelectorAll('.rc').forEach(x=>x.classList.remove('on'));el.classList.add('on');rolVal=r}
+function se(id,s){document.getElementById(id)?.classList.toggle('on',s);return s}
+function doLogin(){
+  const e=document.getElementById('le').value.trim(),p=document.getElementById('lp').value;
+  let err=false;
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e)){se('ele',true);err=true}else se('ele',false);
+  if(!p){se('elp',true);err=true}else se('elp',false);
+  if(err)return;
+  const a=document.getElementById('la');a.className='al al-ok on';a.innerHTML='✓ Acceso correcto. Redirigiendo...';
+  setTimeout(()=>eDash({nombre:e.split('@')[0],rol:'estudiante'}),800);
+}
+function quick(r){const m={estudiante:{nombre:'Ana López',rol:'estudiante'},docente:{nombre:'Prof. María García',rol:'docente'},admin:{nombre:'Admin Sistema',rol:'admin'}};eDash(m[r])}
+function doReg(){
+  const n=document.getElementById('rn').value.trim(),em=document.getElementById('rem').value.trim(),p=document.getElementById('rp').value,p2=document.getElementById('rp2').value;
+  let err=false;
+  if(!n){se('ern',true);err=true}else se('ern',false);
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)){se('erem',true);err=true}else se('erem',false);
+  if(p.length<8){se('erp',true);err=true}else se('erp',false);
+  if(p!==p2){se('erp2',true);err=true}else se('erp2',false);
+  if(err)return;
+  const a=document.getElementById('ra');a.className='al al-ok on';a.innerHTML='✓ Cuenta creada. Inicia sesión.';
+  setTimeout(()=>{a.classList.remove('on');sTab('login')},1800);
+}
+function eDash(u){
+  document.getElementById('page-auth').classList.remove('active');
+  document.getElementById('page-dashboard').classList.add('active');
+  const ini=u.nombre.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
+  document.getElementById('sbav').textContent=ini;
+  document.getElementById('sbnm').textContent=u.nombre;
+  document.getElementById('sbrl').textContent=u.rol.charAt(0).toUpperCase()+u.rol.slice(1);
+  tst('👋 Bienvenido, '+u.nombre.split(' ')[0]+'!');
+}
+function logout(){document.getElementById('page-dashboard').classList.remove('active');document.getElementById('page-auth').classList.add('active')}
+function gSec(id,btn){
+  document.querySelectorAll('.sc').forEach(s=>s.classList.remove('on'));
+  document.querySelectorAll('.sb-i').forEach(b=>b.classList.remove('on'));
+  document.getElementById('sc-'+id).classList.add('on');
+  if(btn)btn.classList.add('on');
+  const T={inicio:'Dashboard',proyectos:'Mis Proyectos',tareas:'Mis Tareas',noticias:'Noticias',perfil:'Mi Perfil'};
+  document.getElementById('tbt').textContent=T[id]||id;
+}
+function tTk(el){const d=el.classList.toggle('dn');el.textContent=d?'✓':'';const t=el.nextElementSibling?.querySelector('.tkt');if(t)t.classList.toggle('dn',d);if(d)tst('✅ Tarea marcada como completada')}
+function fN(btn){document.querySelectorAll('.nfb').forEach(b=>b.classList.remove('on'));btn.classList.add('on');tst('📰 Filtrando: '+btn.textContent.trim())}
+let tT;function tst(m){const e=document.getElementById('toel');e.textContent=m;e.classList.add('on');clearTimeout(tT);tT=setTimeout(()=>e.classList.remove('on'),2800)}
+</script>
+</body>
+</html>
