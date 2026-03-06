@@ -81,22 +81,49 @@ El sistema usa una **arquitectura híbrida** con dos motores de base de datos:
 ```
 eduhub-platform/
 │
-├── 📁 frontend/
-│   └── index.html              ← Frontend standalone (abre en navegador o despliega en Netlify)
+├── 📁 frontend/                   ← Frontend standalone (abre en navegador sin instalar nada)
+│   ├── index.html
+│   ├── app.js
+│   └── style.css
 │
-├── 📁 src/
-│   └── Dashboard.jsx           ← Prototipo React del dashboard principal
+├── 📁 src/                        ← React Dashboard (requiere npm install)
+│   ├── index.html
+│   ├── index.jsx
+│   ├── vite.config.js
+│   ├── package.json
+│   └── components/
+│       └── Dashboard.jsx
+│
+├── 📁 backend/                    ← API REST Node.js + Express
+│   ├── server.js
+│   ├── package.json
+│   ├── .env.example               ← Copia a .env y completa tus credenciales
+│   ├── config/
+│   │   ├── mysql.js
+│   │   └── mongodb.js
+│   ├── middleware/
+│   │   └── auth.js
+│   ├── models/
+│   │   └── Noticia.js
+│   ├── routes/
+│   │   ├── auth.js
+│   │   ├── proyectos.js
+│   │   ├── tareas.js
+│   │   └── noticias.js
+│   └── seeds/
+│       └── seed_mongo.js
 │
 ├── 📁 database/
-│   ├── eduhub_crud_completo.sql ← Script COMPLETO: tablas + datos + CRUD + SP + funciones
-│   └── eduhub_schema.sql        ← Script de esquema base (versión anterior de referencia)
+│   ├── eduhub_crud_completo.sql   ← Script COMPLETO: tablas + CRUD + SP + funciones
+│   └── eduhub_schema.sql          ← Esquema base (referencia)
 │
 ├── 📁 docs/
-│   └── arquitectura.html        ← Documento de arquitectura del sistema
+│   └── arquitectura.html
 │
 ├── .gitignore
-├── CONTRIBUTING.md              ← Guía de ramas, commits y Pull Requests
-└── README.md                    ← Este archivo
+├── CONTRIBUTING.md
+├── SETUP.sh                       ← Script de instalación guiada
+└── README.md
 ```
 
 > 📎 Los documentos `.docx` del parcial están disponibles en la sección [Releases](../../releases) del repositorio.
@@ -185,7 +212,7 @@ Las noticias se muestran en un grid con tarjetas que alternan:
 ### 1. Clonar el repositorio
 
 ```bash
-git clone https://github.com/TU_USUARIO/eduhub-platform.git
+git clone https://github.com/<tu-usuario>/eduhub-platform.git
 cd eduhub-platform
 ```
 
@@ -202,7 +229,18 @@ python3 -m http.server 3000 --directory frontend
 # luego abre http://localhost:3000
 ```
 
-### 3. Configurar la base de datos
+### 3. Configurar el backend
+
+```bash
+cd backend
+cp .env.example .env
+# Edita .env con tus credenciales de MySQL y MongoDB Atlas
+npm install
+npm run dev
+# API disponible en http://localhost:3000
+```
+
+### 4. Configurar la base de datos
 
 ```bash
 # En MySQL Workbench:
@@ -216,7 +254,7 @@ mysql -u root -p < database/eduhub_crud_completo.sql
 
 > ⚠️ **Importante:** usa siempre **Ctrl+Shift+Enter** en Workbench para ejecutar el script completo de una vez. El botón de rayo ⚡ ejecuta línea por línea y rompe los bloques `DELIMITER $$`.
 
-### 4. Verificar la instalación
+### 5. Verificar la instalación
 
 ```sql
 USE eduhub_db;
@@ -232,7 +270,7 @@ CALL sp_progreso_proyecto(1);
 CALL sp_tareas_por_vencer(7);
 ```
 
-### 5. Desplegar en Netlify (frontend)
+### 6. Desplegar en Netlify (frontend)
 
 1. Ve a [netlify.com](https://netlify.com) → **Add new site → Deploy manually**
 2. Arrastra la carpeta `frontend/`

@@ -11,12 +11,13 @@ build/
 .next/
 out/
 
-# ─── Entorno ────────────────────────────
+# ─── ENTORNOS — NUNCA subir .env con credenciales ───
 .env
 .env.local
 .env.development.local
 .env.test.local
 .env.production.local
+# Solo se sube .env.example (sin datos reales)
 
 # ─── Bases de datos locales ─────────────
 *.sqlite

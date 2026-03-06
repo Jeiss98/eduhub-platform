@@ -157,3 +157,36 @@ router.delete('/:id', roleMiddleware('admin'), async (req, res) => {
 });
 
 module.exports = router;
+
+// ─────────────────────────────────────────
+// POST /api/proyectos/:id/estudiantes — Asignar estudiante (usa SP)
+// ─────────────────────────────────────────
+router.post('/:id/estudiantes', roleMiddleware('docente', 'admin'), async (req, res) => {
+  const { usuario_id } = req.body;
+  if (!usuario_id) {
+    return res.status(400).json({ ok: false, mensaje: 'usuario_id es obligatorio.' });
+  }
+  try {
+    await pool.query('CALL sp_asignar_estudiante(?, ?)', [req.params.id, usuario_id]);
+    res.status(201).json({ ok: true, mensaje: 'Estudiante asignado al proyecto.' });
+  } catch (err) {
+    // El SP lanza errores de negocio con SIGNAL SQLSTATE
+    res.status(400).json({ ok: false, mensaje: err.message });
+  }
+});
+
+// DELETE /api/proyectos/:id/estudiantes/:uid — Remover estudiante
+router.delete('/:id/estudiantes/:uid', roleMiddleware('docente', 'admin'), async (req, res) => {
+  try {
+    const [result] = await pool.query(
+      'DELETE FROM proyecto_estudiantes WHERE proyecto_id = ? AND usuario_id = ?',
+      [req.params.id, req.params.uid]
+    );
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ ok: false, mensaje: 'Asignación no encontrada.' });
+    }
+    res.json({ ok: true, mensaje: 'Estudiante removido del proyecto.' });
+  } catch (err) {
+    res.status(500).json({ ok: false, mensaje: 'Error al remover estudiante.' });
+  }
+});

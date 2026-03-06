@@ -7,10 +7,12 @@ const { testConnection } = require('./config/mysql');
 const { connectMongo }   = require('./config/mongodb');
 
 // Rutas
-const authRoutes      = require('./routes/auth');
-const proyectosRoutes = require('./routes/proyectos');
-const tareasRoutes    = require('./routes/tareas');
-const noticiasRoutes  = require('./routes/noticias');
+const authRoutes         = require('./routes/auth');
+const proyectosRoutes    = require('./routes/proyectos');
+const tareasRoutes       = require('./routes/tareas');
+const evaluacionesRoutes = require('./routes/evaluaciones');
+const noticiasRoutes     = require('./routes/noticias');
+const reportesRoutes     = require('./routes/reportes');
 
 const app  = express();
 const PORT = process.env.PORT || 3000;
@@ -25,10 +27,12 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // ─── Rutas ───────────────────────────────
-app.use('/api/auth',      authRoutes);
-app.use('/api/proyectos', proyectosRoutes);
-app.use('/api/tareas',    tareasRoutes);
-app.use('/api/noticias',  noticiasRoutes);
+app.use('/api/auth',         authRoutes);
+app.use('/api/proyectos',    proyectosRoutes);
+app.use('/api/tareas',       tareasRoutes);
+app.use('/api/evaluaciones', evaluacionesRoutes);
+app.use('/api/noticias',     noticiasRoutes);
+app.use('/api/reportes',     reportesRoutes);
 
 // ─── Health check ────────────────────────
 app.get('/api/health', (req, res) => {
@@ -56,7 +60,9 @@ async function start() {
     console.log(`   POST  /api/auth/registro`);
     console.log(`   GET   /api/proyectos`);
     console.log(`   GET   /api/tareas`);
+    console.log(`   GET   /api/evaluaciones`);
     console.log(`   GET   /api/noticias`);
+    console.log(`   GET   /api/reportes/dashboard`);
     console.log(`   GET   /api/health\n`);
   });
 }
