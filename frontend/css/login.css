@@ -1,0 +1,163 @@
+/* ═══════════════════════════════════════════
+   EduHub — login.css
+   Estilos de la página de autenticación
+═══════════════════════════════════════════ */
+
+html, body { height: 100%; }
+body { display: flex; flex-direction: column; }
+
+/* ─── LAYOUT ─── */
+.auth-wrap {
+  flex: 1;
+  display: flex;
+  align-items: stretch;
+}
+
+/* ─── PANEL IZQUIERDO ─── */
+.auth-left {
+  flex: 1;
+  background: var(--bg2);
+  display: flex; flex-direction: column; justify-content: center;
+  padding: 4rem 5rem;
+  border-right: 1px solid var(--border);
+  position: relative; overflow: hidden;
+}
+.auth-left::before {
+  content: '';
+  position: absolute; top: -200px; right: -100px;
+  width: 500px; height: 500px;
+  background: radial-gradient(circle, rgba(37,99,235,0.12) 0%, transparent 70%);
+  pointer-events: none;
+}
+.auth-left::after {
+  content: '';
+  position: absolute; bottom: -150px; left: -80px;
+  width: 380px; height: 380px;
+  background: radial-gradient(circle, rgba(22,163,74,0.07) 0%, transparent 70%);
+  pointer-events: none;
+}
+.auth-left-inner { position: relative; z-index: 1; max-width: 400px; }
+
+.al-back {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 0.8rem; color: var(--muted2); margin-bottom: 3rem;
+  cursor: pointer; border: none; background: none;
+  transition: color 0.15s;
+}
+.al-back:hover { color: var(--text); }
+
+.al-logo { display: flex; align-items: center; gap: 10px; margin-bottom: 3rem; }
+.al-logo-mark {
+  width: 36px; height: 36px; border-radius: 9px;
+  background: var(--blue);
+  display: grid; place-items: center;
+  font-family: var(--font-display); font-weight: 800; font-size: 1rem; color: white;
+}
+.al-logo-text { font-family: var(--font-display); font-weight: 700; font-size: 1rem; }
+
+.al-headline {
+  font-family: var(--font-display);
+  font-size: clamp(1.75rem, 3vw, 2.5rem);
+  font-weight: 800; letter-spacing: -0.025em;
+  line-height: 1.1; margin-bottom: 1rem;
+}
+.al-headline span { color: var(--blue); }
+.al-sub {
+  font-size: 0.88rem; color: var(--muted2);
+  line-height: 1.75; margin-bottom: 2.5rem; max-width: 360px;
+}
+.al-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.al-tag {
+  padding: 4px 12px; border-radius: 100px;
+  border: 1px solid var(--border);
+  font-size: 0.72rem; color: var(--muted2);
+}
+
+/* ─── PANEL DERECHO ─── */
+.auth-right {
+  width: 480px; flex-shrink: 0;
+  background: var(--surface);
+  display: flex; align-items: center; justify-content: center;
+  padding: 3rem 2.5rem;
+  border-left: 1px solid var(--border);
+}
+.auth-card { width: 100%; max-width: 360px; }
+
+/* ─── TABS ─── */
+.tabs {
+  display: flex; gap: 4px;
+  background: var(--bg); border-radius: 10px;
+  padding: 4px; margin-bottom: 2rem;
+}
+.tab-btn {
+  flex: 1; padding: 0.55rem; border-radius: 7px;
+  border: none; background: transparent;
+  color: var(--muted2); font-size: 0.83rem;
+  font-weight: 600; cursor: pointer; transition: all 0.15s;
+  font-family: inherit;
+}
+.tab-btn.active { background: var(--surface2); color: var(--text); }
+
+.form-panel { display: none; }
+.form-panel.active { display: block; }
+
+.form-title {
+  font-family: var(--font-display); font-size: 1.4rem;
+  font-weight: 800; letter-spacing: -0.02em; margin-bottom: 0.25rem;
+}
+.form-sub { font-size: 0.82rem; color: var(--muted2); margin-bottom: 1.5rem; }
+
+/* ─── BOTÓN SUBMIT ─── */
+.btn-submit {
+  width: 100%; padding: 0.75rem; border-radius: 8px; border: none;
+  background: var(--blue); color: white;
+  font-size: 0.88rem; font-weight: 700;
+  cursor: pointer; transition: all 0.15s;
+  margin-top: 0.25rem; font-family: inherit;
+}
+.btn-submit:hover { background: var(--blue2); }
+.btn-submit:disabled { opacity: 0.55; cursor: not-allowed; }
+
+/* ─── DIVIDER ─── */
+.divider {
+  display: flex; align-items: center; gap: 0.75rem;
+  margin: 1.25rem 0;
+}
+.divider span { font-size: 0.75rem; color: var(--muted); white-space: nowrap; }
+.divider::before, .divider::after {
+  content: ''; flex: 1; height: 1px; background: var(--border);
+}
+
+/* ─── ACCESO RÁPIDO ─── */
+.quick-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem; }
+.btn-quick {
+  padding: 0.5rem 0.25rem; border-radius: 7px;
+  border: 1px solid var(--border); background: var(--bg);
+  color: var(--muted2); font-size: 0.75rem; font-weight: 600;
+  cursor: pointer; transition: all 0.15s;
+  text-align: center; font-family: inherit;
+}
+.btn-quick:hover { border-color: var(--blue); color: var(--text); background: var(--blue-l); }
+
+/* ─── ROLE PICKER ─── */
+.role-pick { display: flex; gap: 0.5rem; margin-top: 0.25rem; }
+.rp-opt {
+  flex: 1; border: 1px solid var(--border);
+  border-radius: 7px; padding: 0.55rem 0.25rem;
+  text-align: center; cursor: pointer;
+  transition: all 0.15s; background: var(--bg);
+}
+.rp-opt.active { border-color: var(--blue); background: var(--blue-l); }
+.rp-icon { display: block; font-size: 1rem; margin-bottom: 0.1rem; }
+.rp-lbl { font-size: 0.67rem; font-weight: 600; color: var(--muted2); }
+.rp-opt.active .rp-lbl { color: #93C5FD; }
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 768px) {
+  .auth-left  { display: none; }
+  .auth-right { width: 100%; border-left: none; }
+}
+@media (max-width: 480px) {
+  .auth-right { padding: 2rem 1.5rem; }
+  .frow { grid-template-columns: 1fr; }
+}
