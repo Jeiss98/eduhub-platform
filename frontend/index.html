@@ -3,136 +3,151 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>EduHub — Plataforma Académica</title>
+<title>EduHub — Plataforma Académica Konrad Lorenz</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,500;0,9..40,700;1,9..40,400&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap" rel="stylesheet"/>
 <link rel="stylesheet" href="style.css"/>
 </head>
 <body>
 
 <!-- ══════════════════════════════════════
+     PÁGINA DE INICIO — INDEX
+══════════════════════════════════════ -->
+<div id="pg-index" class="page active">
+  <nav class="nav">
+    <div class="nav-logo">
+      <div class="nav-mark">E</div>
+      <span class="nav-brand">EduHub</span>
+    </div>
+    <div class="nav-links">
+      <button class="nav-link" onclick="scrollTo(0,0)" title="Inicio">Inicio</button>
+      <button class="nav-link" onclick="document.getElementById('features').scrollIntoView({behavior:'smooth'})" title="Funcionalidades">Funcionalidades</button>
+      <button class="nav-link" onclick="document.getElementById('roles').scrollIntoView({behavior:'smooth'})" title="Roles">Roles</button>
+      <button class="nav-link" onclick="goToAuth()" title="Iniciar sesión">Iniciar sesión</button>
+    </div>
+    <button class="nav-cta" onclick="goToAuth()" title="Acceder a la plataforma">Acceder →</button>
+    <button class="nav-hamburger" onclick="goToAuth()" title="Menú">☰</button>
+  </nav>
+
+  <div class="hero">
+    <div class="hero-badge">Plataforma Académica · Konrad Lorenz 2026</div>
+    <h1>Gestión académica<br>sin <span class="grad">fricciones</span></h1>
+    <p class="hero-sub">EduHub centraliza proyectos, tareas, evaluaciones y comunicación institucional en un solo lugar. Para estudiantes, docentes y administradores.</p>
+    <div class="hero-btns">
+      <button class="btn-primary" onclick="goToAuth()" title="Comenzar a usar EduHub">Comenzar ahora →</button>
+      <button class="btn-secondary" onclick="document.getElementById('features').scrollIntoView({behavior:'smooth'})" title="Ver funcionalidades">Ver funcionalidades</button>
+    </div>
+  </div>
+
+  <div class="stats-band">
+    <div class="stat-item"><div class="stat-num">3</div><div class="stat-lbl">Roles de usuario</div></div>
+    <div class="stat-item"><div class="stat-num">5</div><div class="stat-lbl">Módulos principales</div></div>
+    <div class="stat-item"><div class="stat-num">2</div><div class="stat-lbl">Bases de datos</div></div>
+    <div class="stat-item"><div class="stat-num">100%</div><div class="stat-lbl">Responsive</div></div>
+  </div>
+
+  <div class="features" id="features">
+    <div class="features-head">
+      <div class="section-tag">Funcionalidades</div>
+      <h2>Todo lo que necesitas<br>en un solo lugar</h2>
+      <p>Diseñado para eliminar la fragmentación en la gestión académica universitaria.</p>
+    </div>
+    <div class="features-grid">
+      <div class="feat-card"><div class="feat-icon" style="background:rgba(79,142,247,0.15)">⬡</div><h3>Gestión de Proyectos</h3><p>Crea, asigna y hace seguimiento de proyectos académicos con barras de progreso en tiempo real.</p></div>
+      <div class="feat-card"><div class="feat-icon" style="background:rgba(20,184,166,0.15)">◇</div><h3>Control de Tareas</h3><p>Asigna tareas con prioridades, fechas límite y alertas automáticas de vencimiento.</p></div>
+      <div class="feat-card"><div class="feat-icon" style="background:rgba(139,92,246,0.15)">★</div><h3>Evaluaciones</h3><p>Registra calificaciones con comentarios y consulta reportes estadísticos por proyecto.</p></div>
+      <div class="feat-card"><div class="feat-icon" style="background:rgba(245,158,11,0.15)">◉</div><h3>Portal de Noticias</h3><p>Comunica novedades institucionales con categorías, filtros y conteo de vistas almacenado en MongoDB.</p></div>
+      <div class="feat-card"><div class="feat-icon" style="background:rgba(244,63,94,0.15)">🔐</div><h3>Autenticación por Roles</h3><p>Inicio de sesión seguro con JWT. Cada rol accede solo a lo que le corresponde.</p></div>
+      <div class="feat-card"><div class="feat-icon" style="background:rgba(16,185,129,0.15)">📊</div><h3>Reportes y Estadísticas</h3><p>Dashboard con métricas de avance, tareas por vencer y promedios desde la base de datos.</p></div>
+    </div>
+  </div>
+
+  <div class="roles-section" id="roles">
+    <div class="roles-inner">
+      <div style="text-align:center;margin-bottom:.5rem"><div class="section-tag">Roles</div></div>
+      <div class="features-head">
+        <h2>Una plataforma,<br>tres experiencias</h2>
+        <p>Cada rol tiene su propio conjunto de herramientas y vistas personalizadas.</p>
+      </div>
+      <div class="roles-grid">
+        <div class="role-card est"><div class="role-emoji">👨‍🎓</div><h3>Estudiante</h3><ul class="role-list"><li>Ver proyectos asignados con progreso</li><li>Gestionar tareas propias</li><li>Consultar evaluaciones y notas</li><li>Leer noticias institucionales</li></ul></div>
+        <div class="role-card doc"><div class="role-emoji">👩‍🏫</div><h3>Docente</h3><ul class="role-list"><li>Crear y gestionar proyectos</li><li>Asignar estudiantes y tareas</li><li>Registrar evaluaciones</li><li>Ver reportes de avance</li><li>Publicar noticias</li></ul></div>
+        <div class="role-card adm"><div class="role-emoji">🛡️</div><h3>Administrador</h3><ul class="role-list"><li>Gestión completa de usuarios</li><li>Control total del sistema</li><li>Administrar noticias</li><li>Ver estadísticas globales</li></ul></div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <p>© 2026 EduHub Platform · Fundación Universitaria Konrad Lorenz · Bases de Datos II</p>
+    <button class="btn-primary" onclick="goToAuth()" title="Ingresar a EduHub" style="padding:.5rem 1.25rem;font-size:.8rem">Ingresar →</button>
+  </footer>
+</div>
+
+
+<!-- ══════════════════════════════════════
      AUTH
 ══════════════════════════════════════ -->
-<div id="pg-auth" class="page active">
+<div id="pg-auth" class="page">
   <div class="auth-left">
     <div class="al-content">
       <div class="al-logo">
         <div class="al-logo-mark">E</div>
         <span class="al-logo-text">EduHub</span>
       </div>
-      <h1 class="al-headline">Donde los<br>proyectos<br><strong>cobran vida</strong></h1>
-      <p class="al-sub">Plataforma académica para gestionar proyectos, tareas y evaluaciones. Un solo espacio para estudiantes, docentes y administradores.</p>
+      <h1 class="al-headline">Donde los<br>proyectos<br><span class="grad">cobran vida</span></h1>
+      <p class="al-sub">Plataforma académica centralizada para gestionar proyectos, tareas, evaluaciones y noticias institucionales.</p>
       <div class="al-tags">
         <span class="al-tag">Proyectos académicos</span>
         <span class="al-tag">Seguimiento de tareas</span>
         <span class="al-tag">Evaluaciones</span>
-        <span class="al-tag">Noticias institucionales</span>
+        <span class="al-tag">Noticias</span>
       </div>
     </div>
   </div>
-
   <div class="auth-right">
     <div class="auth-inner">
-
       <div class="tabs">
         <button class="tab-btn active" onclick="switchTab('login')">Iniciar sesión</button>
         <button class="tab-btn"        onclick="switchTab('reg')">Registrarse</button>
       </div>
-
       <!-- LOGIN -->
       <div class="form-panel active">
         <div class="ar-title">Bienvenido</div>
         <p class="ar-sub">Ingresa tus credenciales para continuar</p>
         <div id="msg-login" class="form-msg"></div>
-
-        <div class="fld">
-          <label for="l-email">Correo electrónico</label>
-          <input type="email" id="l-email" placeholder="tu@correo.com"/>
-          <span class="ferr" id="e-l-email">Ingresa un correo válido</span>
-        </div>
-        <div class="fld">
-          <label for="l-pass">Contraseña</label>
-          <div class="pw-wrap">
-            <input type="password" id="l-pass" placeholder="••••••••"/>
-            <span class="pw-eye" onclick="togglePw('l-pass',this)">👁</span>
-          </div>
-          <span class="ferr" id="e-l-pass">Contraseña requerida</span>
-        </div>
-
-        <button id="btn-login" class="btn-primary" data-label="Ingresar a EduHub" onclick="doLogin()">
-          Ingresar a EduHub
-        </button>
-
+        <div class="fld"><label for="l-email">Correo electrónico</label><input type="email" id="l-email" placeholder="tu@correo.com"/><span class="ferr" id="e-l-email">Ingresa un correo válido</span></div>
+        <div class="fld"><label for="l-pass">Contraseña</label><div class="pw-wrap"><input type="password" id="l-pass" placeholder="••••••••"/><span class="pw-eye" onclick="togglePw('l-pass',this)">👁</span></div><span class="ferr" id="e-l-pass">Contraseña requerida</span></div>
+        <button id="btn-login" class="btn-auth" data-label="Ingresar a EduHub" onclick="doLogin()">Ingresar a EduHub</button>
         <div class="sep">o acceso rápido (demo)</div>
         <div class="quick-row">
-          <button class="btn-ghost" onclick="quickLogin('estudiante')">👨‍🎓 Estudiante</button>
-          <button class="btn-ghost" onclick="quickLogin('docente')">👩‍🏫 Docente</button>
-          <button class="btn-ghost" onclick="quickLogin('admin')">🛡 Admin</button>
+          <button class="btn-ghost" onclick="quickLogin('estudiante')" title="Acceso demo como estudiante">👨‍🎓 Estudiante</button>
+          <button class="btn-ghost" onclick="quickLogin('docente')"    title="Acceso demo como docente">👩‍🏫 Docente</button>
+          <button class="btn-ghost" onclick="quickLogin('admin')"      title="Acceso demo como administrador">🛡 Admin</button>
         </div>
       </div>
-
       <!-- REGISTRO -->
       <div class="form-panel">
         <div class="ar-title">Crear cuenta</div>
         <p class="ar-sub">Completa el formulario para registrarte</p>
         <div id="msg-reg" class="form-msg"></div>
-
         <div class="frow">
-          <div class="fld">
-            <label for="r-nombre">Nombre</label>
-            <input type="text" id="r-nombre" placeholder="Juan"/>
-            <span class="ferr" id="e-r-nombre">Requerido</span>
-          </div>
-          <div class="fld">
-            <label for="r-apellido">Apellido</label>
-            <input type="text" id="r-apellido" placeholder="García"/>
-          </div>
+          <div class="fld"><label for="r-nombre">Nombre</label><input type="text" id="r-nombre" placeholder="Juan"/><span class="ferr" id="e-r-nombre">Requerido</span></div>
+          <div class="fld"><label for="r-apellido">Apellido</label><input type="text" id="r-apellido" placeholder="García"/></div>
         </div>
-
-        <div class="fld">
-          <label for="r-email">Correo electrónico</label>
-          <input type="email" id="r-email" placeholder="tu@correo.com"/>
-          <span class="ferr" id="e-r-email">Correo inválido</span>
-        </div>
-
+        <div class="fld"><label for="r-email">Correo electrónico</label><input type="email" id="r-email" placeholder="tu@correo.com"/><span class="ferr" id="e-r-email">Correo inválido</span></div>
         <div class="frow">
-          <div class="fld">
-            <label for="r-pass">Contraseña</label>
-            <div class="pw-wrap">
-              <input type="password" id="r-pass" placeholder="Mín. 8"/>
-              <span class="pw-eye" onclick="togglePw('r-pass',this)">👁</span>
-            </div>
-            <span class="ferr" id="e-r-pass">Mín. 8 caracteres</span>
-          </div>
-          <div class="fld">
-            <label for="r-pass2">Confirmar</label>
-            <div class="pw-wrap">
-              <input type="password" id="r-pass2" placeholder="Repite"/>
-            </div>
-            <span class="ferr" id="e-r-pass2">No coinciden</span>
-          </div>
+          <div class="fld"><label for="r-pass">Contraseña</label><div class="pw-wrap"><input type="password" id="r-pass" placeholder="Mín. 8"/><span class="pw-eye" onclick="togglePw('r-pass',this)">👁</span></div><span class="ferr" id="e-r-pass">Mín. 8 caracteres</span></div>
+          <div class="fld"><label for="r-pass2">Confirmar</label><div class="pw-wrap"><input type="password" id="r-pass2" placeholder="Repite"/></div><span class="ferr" id="e-r-pass2">No coinciden</span></div>
         </div>
-
-        <div class="fld">
-          <label>Rol</label>
+        <div class="fld"><label>Rol</label>
           <div class="role-pick">
-            <div class="rp-opt active" onclick="pickRole(this,'estudiante')">
-              <span class="rp-icon">👨‍🎓</span><span class="rp-lbl">Estudiante</span>
-            </div>
-            <div class="rp-opt" onclick="pickRole(this,'docente')">
-              <span class="rp-icon">👩‍🏫</span><span class="rp-lbl">Docente</span>
-            </div>
-            <div class="rp-opt" onclick="pickRole(this,'admin')">
-              <span class="rp-icon">🛡</span><span class="rp-lbl">Admin</span>
-            </div>
+            <div class="rp-opt active" onclick="pickRole(this,'estudiante')"><span class="rp-icon">👨‍🎓</span><span class="rp-lbl">Estudiante</span></div>
+            <div class="rp-opt"        onclick="pickRole(this,'docente')">  <span class="rp-icon">👩‍🏫</span><span class="rp-lbl">Docente</span></div>
+            <div class="rp-opt"        onclick="pickRole(this,'admin')">    <span class="rp-icon">🛡</span> <span class="rp-lbl">Admin</span></div>
           </div>
         </div>
-
-        <button id="btn-reg" class="btn-primary" data-label="Crear mi cuenta" onclick="doRegistro()">
-          Crear mi cuenta
-        </button>
+        <button id="btn-reg" class="btn-auth" data-label="Crear mi cuenta" onclick="doRegistro()">Crear mi cuenta</button>
       </div>
-
     </div>
   </div>
 </div>
@@ -142,8 +157,6 @@
      DASHBOARD
 ══════════════════════════════════════ -->
 <div id="pg-dash" class="page">
-
-  <!-- Sidebar -->
   <aside class="sidebar">
     <div class="sb-head">
       <div class="sb-mark">E</div>
@@ -151,175 +164,72 @@
     </div>
     <nav class="sb-nav">
       <span class="sb-group">Principal</span>
-      <button class="nav-btn active" data-sec="inicio"    onclick="loadSection('inicio',this)">
-        <span class="nb-icon">◈</span> Dashboard
-      </button>
-      <button class="nav-btn" data-sec="proyectos" onclick="loadSection('proyectos',this)">
-        <span class="nb-icon">⬡</span> Proyectos <span class="nb-count">4</span>
-      </button>
-      <button class="nav-btn" data-sec="tareas"    onclick="loadSection('tareas',this)">
-        <span class="nb-icon">◇</span> Mis Tareas <span class="nb-count">3</span>
-      </button>
+      <button class="nav-btn active" data-sec="inicio"    onclick="loadSection('inicio',this)"    title="Dashboard">   <span class="nb-icon">◈</span> Dashboard</button>
+      <button class="nav-btn"        data-sec="proyectos" onclick="loadSection('proyectos',this)" title="Proyectos">   <span class="nb-icon">⬡</span> Proyectos <span class="nb-count">4</span></button>
+      <button class="nav-btn"        data-sec="tareas"    onclick="loadSection('tareas',this)"    title="Mis Tareas">  <span class="nb-icon">◇</span> Mis Tareas <span class="nb-count">3</span></button>
       <span class="sb-group" style="margin-top:.75rem">Contenido</span>
-      <button class="nav-btn" data-sec="noticias"  onclick="loadSection('noticias',this)">
-        <span class="nb-icon">◉</span> Noticias
-      </button>
+      <button class="nav-btn"        data-sec="noticias"  onclick="loadSection('noticias',this)"  title="Noticias">    <span class="nb-icon">◉</span> Noticias</button>
       <span class="sb-group" style="margin-top:.75rem">Cuenta</span>
-      <button class="nav-btn" data-sec="perfil"    onclick="loadSection('perfil',this)">
-        <span class="nb-icon">◎</span> Mi Perfil
-      </button>
+      <button class="nav-btn"        data-sec="perfil"    onclick="loadSection('perfil',this)"    title="Mi Perfil">   <span class="nb-icon">◎</span> Mi Perfil</button>
     </nav>
     <div class="sb-foot">
       <div class="sb-av" id="sb-av">AL</div>
-      <div>
-        <div class="sb-uname" id="sb-uname">Cargando...</div>
-        <div class="sb-urole" id="sb-urole">—</div>
-      </div>
-      <button class="btn-logout" onclick="doLogout()">✕</button>
+      <div><div class="sb-uname" id="sb-uname">Cargando...</div><div class="sb-urole" id="sb-urole">—</div></div>
+      <button class="btn-logout" onclick="doLogout()" title="Cerrar sesión">✕</button>
     </div>
   </aside>
 
-  <!-- Main area -->
   <div class="main-wrap">
-
-    <!-- Topbar -->
     <div class="topbar">
-      <div>
-        <div class="tb-title" id="tb-title">Dashboard</div>
-        <div class="tb-sub">Fundación Universitaria Konrad Lorenz · 2026</div>
-      </div>
+      <div><div class="tb-title" id="tb-title">Dashboard</div><div class="tb-sub">Fundación Universitaria Konrad Lorenz · 2026</div></div>
       <div class="tb-right">
-        <div class="api-status">
-          <div class="api-dot loading" id="api-dot"></div>
-          <span id="api-text">Conectando...</span>
-        </div>
-        <div class="icn-btn" onclick="toast('Sin notificaciones nuevas')">🔔</div>
+        <div class="api-status"><div class="api-dot loading" id="api-dot"></div><span id="api-text">Conectando...</span></div>
+        <div class="icn-btn" onclick="toast('Sin notificaciones nuevas')" title="Notificaciones">🔔</div>
       </div>
     </div>
 
-    <!-- ── SECCIÓN INICIO ── -->
+    <!-- INICIO -->
     <section id="sec-inicio" class="section active">
-
       <div class="stat-grid">
-        <div class="stat-card">
-          <div class="sc-top"><span class="sc-lbl">Proyectos</span><div class="sc-icon" style="background:var(--blue-s)">⬡</div></div>
-          <div class="sc-val">2</div>
-          <div class="sc-sub" style="color:var(--blue)">↑ 1 nuevo este mes</div>
-        </div>
-        <div class="stat-card">
-          <div class="sc-top"><span class="sc-lbl">Pendientes</span><div class="sc-icon" style="background:var(--amber-s)">◇</div></div>
-          <div class="sc-val">3</div>
-          <div class="sc-sub" style="color:var(--amber)">2 próximas a vencer</div>
-        </div>
-        <div class="stat-card">
-          <div class="sc-top"><span class="sc-lbl">Completadas</span><div class="sc-icon" style="background:var(--sage-s)">✓</div></div>
-          <div class="sc-val">30</div>
-          <div class="sc-sub" style="color:var(--sage)">+5 esta semana</div>
-        </div>
-        <div class="stat-card">
-          <div class="sc-top"><span class="sc-lbl">Promedio</span><div class="sc-icon" style="background:var(--violet-s)">★</div></div>
-          <div class="sc-val">8.7</div>
-          <div class="sc-sub" style="color:var(--violet)">Sobre 10 puntos</div>
-        </div>
+        <div class="stat-card"><div class="sc-top"><span class="sc-lbl">Proyectos</span><div class="sc-icon" style="background:rgba(79,142,247,0.15)">⬡</div></div><div class="sc-val">2</div><div class="sc-sub" style="color:var(--accent)">↑ 1 nuevo este mes</div></div>
+        <div class="stat-card"><div class="sc-top"><span class="sc-lbl">Pendientes</span><div class="sc-icon" style="background:rgba(245,158,11,0.15)">◇</div></div><div class="sc-val">3</div><div class="sc-sub" style="color:var(--amber)">2 próximas a vencer</div></div>
+        <div class="stat-card"><div class="sc-top"><span class="sc-lbl">Completadas</span><div class="sc-icon" style="background:rgba(16,185,129,0.15)">✓</div></div><div class="sc-val">30</div><div class="sc-sub" style="color:var(--green)">+5 esta semana</div></div>
+        <div class="stat-card"><div class="sc-top"><span class="sc-lbl">Promedio</span><div class="sc-icon" style="background:rgba(139,92,246,0.15)">★</div></div><div class="sc-val">8.7</div><div class="sc-sub" style="color:var(--violet)">Sobre 10 puntos</div></div>
       </div>
-
       <div class="grid-2">
         <div class="card">
-          <div class="card-hd">
-            <span class="card-title">Avance de proyectos</span>
-            <button class="btn-link" onclick="loadSection('proyectos',document.querySelector('[data-sec=proyectos]'))">Ver todos</button>
-          </div>
+          <div class="card-hd"><span class="card-title">Avance de proyectos</span><button class="btn-link" onclick="loadSection('proyectos',document.querySelector('[data-sec=proyectos]'))">Ver todos</button></div>
           <div class="card-body">
-            <div class="prog">
-              <div class="prog-top"><span>Análisis de Algoritmos</span><span>68%</span></div>
-              <div class="prog-track"><div class="prog-bar" style="width:68%;background:linear-gradient(90deg,var(--blue),#6366F1)"></div></div>
-            </div>
-            <div class="prog">
-              <div class="prog-top"><span>Diseño BD Relacional</span><span>45%</span></div>
-              <div class="prog-track"><div class="prog-bar" style="width:45%;background:linear-gradient(90deg,var(--teal),var(--blue))"></div></div>
-            </div>
-            <div class="prog">
-              <div class="prog-top"><span>App Móvil React Native</span><span>20%</span></div>
-              <div class="prog-track"><div class="prog-bar" style="width:20%;background:linear-gradient(90deg,var(--amber),var(--rose))"></div></div>
-            </div>
-            <div class="prog">
-              <div class="prog-top"><span>API REST con Node.js</span><span style="color:var(--sage)">100% ✓</span></div>
-              <div class="prog-track"><div class="prog-bar" style="width:100%;background:var(--sage)"></div></div>
-            </div>
+            <div class="prog"><div class="prog-top"><span>Análisis de Algoritmos</span><span>68%</span></div><div class="prog-track"><div class="prog-bar" style="width:68%;background:linear-gradient(90deg,var(--accent),var(--violet))"></div></div></div>
+            <div class="prog"><div class="prog-top"><span>Diseño BD Relacional</span><span>45%</span></div><div class="prog-track"><div class="prog-bar" style="width:45%;background:linear-gradient(90deg,var(--teal),var(--accent))"></div></div></div>
+            <div class="prog"><div class="prog-top"><span>App Móvil React Native</span><span>20%</span></div><div class="prog-track"><div class="prog-bar" style="width:20%;background:linear-gradient(90deg,var(--amber),var(--rose))"></div></div></div>
+            <div class="prog"><div class="prog-top"><span>API REST con Node.js</span><span style="color:var(--green)">100% ✓</span></div><div class="prog-track"><div class="prog-bar" style="width:100%;background:var(--green)"></div></div></div>
           </div>
         </div>
-
         <div class="card">
-          <div class="card-hd">
-            <span class="card-title">Tareas próximas</span>
-            <span class="bd bd-amber">3 activas</span>
-          </div>
+          <div class="card-hd"><span class="card-title">Tareas próximas</span><span class="bd bd-amber">3 activas</span></div>
           <div style="padding:.2rem 1.25rem">
-            <div class="t-item">
-              <div class="t-ck" onclick="toggleTarea(this,'1')"></div>
-              <div style="flex:1"><div class="t-name">Análisis Big-O</div><div class="t-sub">Algoritmos · 05 Mar</div></div>
-              <span class="bd bd-rose">alta</span>
-            </div>
-            <div class="t-item">
-              <div class="t-ck" onclick="toggleTarea(this,'2')"></div>
-              <div style="flex:1"><div class="t-name">Normalización 3FN</div><div class="t-sub">Diseño BD · 10 Mar</div></div>
-              <span class="bd bd-amber">media</span>
-            </div>
-            <div class="t-item">
-              <div class="t-ck done" onclick="toggleTarea(this,'3')">✓</div>
-              <div style="flex:1"><div class="t-name done">Modelado ER</div><div class="t-sub">Diseño BD</div></div>
-              <span class="bd bd-sage">listo</span>
-            </div>
-            <div class="t-item">
-              <div class="t-ck done" onclick="toggleTarea(this,'4')">✓</div>
-              <div style="flex:1"><div class="t-name done">Endpoints JWT</div><div class="t-sub">API REST</div></div>
-              <span class="bd bd-sage">listo</span>
-            </div>
+            <div class="t-item"><div class="t-ck" onclick="toggleTarea(this,'1')"></div><div style="flex:1"><div class="t-name">Análisis Big-O</div><div class="t-sub">Algoritmos · 05 Mar</div></div><span class="bd bd-rose">alta</span></div>
+            <div class="t-item"><div class="t-ck" onclick="toggleTarea(this,'2')"></div><div style="flex:1"><div class="t-name">Normalización 3FN</div><div class="t-sub">Diseño BD · 10 Mar</div></div><span class="bd bd-amber">media</span></div>
+            <div class="t-item"><div class="t-ck done" onclick="toggleTarea(this,'3')">✓</div><div style="flex:1"><div class="t-name done">Modelado ER</div><div class="t-sub">Diseño BD</div></div><span class="bd bd-sage">listo</span></div>
+            <div class="t-item"><div class="t-ck done" onclick="toggleTarea(this,'4')">✓</div><div style="flex:1"><div class="t-name done">Endpoints JWT</div><div class="t-sub">API REST</div></div><span class="bd bd-sage">listo</span></div>
           </div>
         </div>
       </div>
-
-      <!-- Mini noticias -->
       <div class="card">
-        <div class="card-hd">
-          <span class="card-title">Noticias recientes</span>
-          <button class="btn-link" onclick="loadSection('noticias',document.querySelector('[data-sec=noticias]'))">Ver todas</button>
-        </div>
+        <div class="card-hd"><span class="card-title">Noticias recientes</span><button class="btn-link" onclick="loadSection('noticias',document.querySelector('[data-sec=noticias]'))">Ver todas</button></div>
         <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:1.1rem 1.25rem">
-          <div class="nc nv-navy" style="border-radius:14px;animation:none;cursor:pointer" onclick="loadSection('noticias',document.querySelector('[data-sec=noticias]'))">
-            <div class="nc-splash" style="font-size:1.8rem;min-height:60px">📅</div>
-            <div class="nc-body" style="padding:.75rem .9rem">
-              <div class="nc-cat">Académico</div>
-              <div class="nc-title" style="font-size:.78rem">Semana de Proyectos Finales — Mayo 2026</div>
-              <div class="nc-footer">hace 2h · 234 vistas</div>
-            </div>
-          </div>
-          <div class="nc nv-teal" style="border-radius:14px;animation:none;cursor:pointer" onclick="loadSection('noticias',document.querySelector('[data-sec=noticias]'))">
-            <div class="nc-splash" style="font-size:1.8rem;min-height:60px">🐳</div>
-            <div class="nc-body" style="padding:.75rem .9rem">
-              <div class="nc-cat">Taller</div>
-              <div class="nc-title" style="font-size:.78rem">Taller gratuito de Docker este viernes</div>
-              <div class="nc-footer">hace 5h · 189 vistas</div>
-            </div>
-          </div>
-          <div class="nc nv-sage" style="border-radius:14px;animation:none;cursor:pointer" onclick="loadSection('noticias',document.querySelector('[data-sec=noticias]'))">
-            <div class="nc-splash" style="font-size:1.8rem;min-height:60px">🤖</div>
-            <div class="nc-body" style="padding:.75rem .9rem">
-              <div class="nc-cat">Infra</div>
-              <div class="nc-title" style="font-size:.78rem">Nuevo laboratorio de IA disponible</div>
-              <div class="nc-footer">ayer · 412 vistas</div>
-            </div>
-          </div>
+          <div class="nc nv-navy" style="border-radius:14px;animation:none;cursor:pointer" onclick="loadSection('noticias',document.querySelector('[data-sec=noticias]'))"><div class="nc-splash" style="font-size:1.8rem;min-height:60px">📅</div><div class="nc-body"><div class="nc-cat">Académico</div><div class="nc-title" style="font-size:.78rem">Semana de Proyectos Finales</div></div></div>
+          <div class="nc nv-teal" style="border-radius:14px;animation:none;cursor:pointer" onclick="loadSection('noticias',document.querySelector('[data-sec=noticias]'))"><div class="nc-splash" style="font-size:1.8rem;min-height:60px">🐳</div><div class="nc-body"><div class="nc-cat">Taller</div><div class="nc-title" style="font-size:.78rem">Taller gratuito de Docker</div></div></div>
+          <div class="nc nv-violet" style="border-radius:14px;animation:none;cursor:pointer" onclick="loadSection('noticias',document.querySelector('[data-sec=noticias]'))"><div class="nc-splash" style="font-size:1.8rem;min-height:60px">🤖</div><div class="nc-body"><div class="nc-cat">Infra</div><div class="nc-title" style="font-size:.78rem">Nuevo laboratorio de IA</div></div></div>
         </div>
       </div>
     </section>
 
-    <!-- ── SECCIÓN PROYECTOS ── -->
-    <section id="sec-proyectos" class="section">
-      <div id="proyectos-grid" class="grid-4"></div>
-    </section>
+    <!-- PROYECTOS -->
+    <section id="sec-proyectos" class="section"><div id="proyectos-grid" class="grid-4"></div></section>
 
-    <!-- ── SECCIÓN TAREAS ── -->
+    <!-- TAREAS -->
     <section id="sec-tareas" class="section">
       <div class="card">
         <div class="card-hd"><span class="card-title">Todas mis tareas</span><span class="bd bd-amber" id="tareas-count">cargando...</span></div>
@@ -327,7 +237,7 @@
       </div>
     </section>
 
-    <!-- ── SECCIÓN NOTICIAS ── -->
+    <!-- NOTICIAS -->
     <section id="sec-noticias" class="section">
       <div class="news-bar">
         <button class="nf-btn active" onclick="filterNoticias(this,'all')">Todas</button>
@@ -336,12 +246,10 @@
         <button class="nf-btn" onclick="filterNoticias(this,'infra')">Infraestructura</button>
         <button class="nf-btn" onclick="filterNoticias(this,'logro')">Logros</button>
       </div>
-      <div class="bento" id="news-grid">
-        <div class="news-loading"><div class="spinner"></div> Cargando noticias...</div>
-      </div>
+      <div class="bento" id="news-grid"><div class="news-loading"><div class="spinner"></div> Cargando noticias...</div></div>
     </section>
 
-    <!-- ── SECCIÓN PERFIL ── -->
+    <!-- PERFIL -->
     <section id="sec-perfil" class="section">
       <div style="max-width:520px;display:flex;flex-direction:column;gap:10px">
         <div class="card">
@@ -353,7 +261,7 @@
               <div class="fld pf-full"><label>Correo</label><input type="email" id="pf-email" value="alopez@eduhub.com"/></div>
               <div class="fld pf-full"><label>Rol</label><input type="text" value="Estudiante" readonly style="opacity:.5;cursor:not-allowed"/></div>
             </div>
-            <button class="btn-primary" style="width:auto;margin-top:.5rem" onclick="guardarPerfil()">Guardar cambios</button>
+            <button class="btn-auth" style="width:auto;margin-top:.5rem;padding:.6rem 1.25rem" onclick="guardarPerfil()">Guardar cambios</button>
           </div>
         </div>
         <div class="card">
@@ -362,21 +270,23 @@
             <div class="fld"><label>Contraseña actual</label><input type="password" id="pf-actual" placeholder="••••••••"/></div>
             <div class="fld"><label>Nueva contraseña</label><input type="password" id="pf-nueva" placeholder="Mín. 8 caracteres"/></div>
             <div class="fld"><label>Confirmar nueva</label><input type="password" id="pf-conf" placeholder="Repite la contraseña"/></div>
-            <button class="btn-primary" style="width:auto" onclick="cambiarPassword()">Actualizar contraseña</button>
+            <button class="btn-auth" style="width:auto;padding:.6rem 1.25rem" onclick="cambiarPassword()">Actualizar contraseña</button>
           </div>
         </div>
       </div>
     </section>
-
-  </div><!-- /main-wrap -->
-</div><!-- /pg-dash -->
-
-<!-- Toast -->
-<div id="toast" class="toast">
-  <span class="toast-dot"></span>
-  <span id="toast-msg"></span>
+  </div>
 </div>
 
+<!-- Toast -->
+<div id="toast" class="toast"><span class="toast-dot"></span><span id="toast-msg"></span></div>
+
 <script src="app.js"></script>
+<script>
+function goToAuth() {
+  document.getElementById('pg-index').classList.remove('active');
+  document.getElementById('pg-auth').classList.add('active');
+}
+</script>
 </body>
 </html>
