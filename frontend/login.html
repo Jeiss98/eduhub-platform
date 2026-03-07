@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>EduHub — Iniciar sesión</title>
+  <link rel="stylesheet" href="css/base.css"/>
+  <link rel="stylesheet" href="css/login.css"/>
+</head>
+<body>
+
+<div class="auth-wrap">
+
+  <!-- ══════════════════════════════════════
+       PANEL IZQUIERDO — Descripción
+  ══════════════════════════════════════ -->
+  <div class="auth-left">
+    <div class="auth-left-inner">
+
+      <button class="al-back" onclick="window.location.href='index.html'" title="Volver a la página de inicio">
+        ← Volver al inicio
+      </button>
+
+      <div class="al-logo">
+        <div class="al-logo-mark">E</div>
+        <span class="al-logo-text">EduHub</span>
+      </div>
+
+      <h1 class="al-headline">Gestión académica<br>sin <span>fricciones</span></h1>
+
+      <p class="al-sub">
+        Plataforma centralizada para proyectos, tareas, evaluaciones
+        y noticias institucionales. Fundación Universitaria Konrad Lorenz · 2026.
+      </p>
+
+      <div class="al-tags">
+        <span class="al-tag">Proyectos</span>
+        <span class="al-tag">Tareas</span>
+        <span class="al-tag">Evaluaciones</span>
+        <span class="al-tag">Noticias</span>
+        <span class="al-tag">Reportes</span>
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- ══════════════════════════════════════
+       PANEL DERECHO — Formulario
+       Requisito: usuario, contraseña, botón acceso + registro
+  ══════════════════════════════════════ -->
+  <div class="auth-right">
+    <div class="auth-card">
+
+      <!-- TABS -->
+      <div class="tabs">
+        <button class="tab-btn active" onclick="switchTab('login')" title="Iniciar sesión con cuenta existente">
+          Iniciar sesión
+        </button>
+        <button class="tab-btn" onclick="switchTab('reg')" title="Crear una cuenta nueva">
+          Registrarse
+        </button>
+      </div>
+
+
+      <!-- ── LOGIN ── -->
+      <div class="form-panel active" id="panel-login">
+        <div class="form-title">Bienvenido</div>
+        <p class="form-sub">Ingresa tus credenciales para continuar</p>
+
+        <div id="msg-login" class="form-msg"></div>
+
+        <div class="fld">
+          <label for="l-email">Correo electrónico</label>
+          <input type="email" id="l-email" placeholder="tu@correo.com" autocomplete="email"/>
+          <span class="ferr" id="e-l-email">Ingresa un correo electrónico válido</span>
+        </div>
+
+        <div class="fld">
+          <label for="l-pass">Contraseña</label>
+          <div class="pw-wrap">
+            <input type="password" id="l-pass" placeholder="••••••••" autocomplete="current-password"/>
+            <span class="pw-eye" onclick="togglePw('l-pass', this)" title="Mostrar u ocultar contraseña">👁</span>
+          </div>
+          <span class="ferr" id="e-l-pass">La contraseña es requerida</span>
+        </div>
+
+        <button id="btn-login" class="btn-submit" data-label="Ingresar a EduHub" onclick="doLogin()" title="Validar credenciales e ingresar al sistema">
+          Ingresar a EduHub
+        </button>
+
+        <div class="divider"><span>o acceso rápido (demo)</span></div>
+
+        <div class="quick-row">
+          <button class="btn-quick" onclick="quickLogin('estudiante')" title="Acceso simulado como estudiante">
+            👨‍🎓 Estudiante
+          </button>
+          <button class="btn-quick" onclick="quickLogin('docente')" title="Acceso simulado como docente">
+            👩‍🏫 Docente
+          </button>
+          <button class="btn-quick" onclick="quickLogin('admin')" title="Acceso simulado como administrador">
+            🛡 Admin
+          </button>
+        </div>
+      </div>
+
+
+      <!-- ── REGISTRO ── -->
+      <div class="form-panel" id="panel-reg">
+        <div class="form-title">Crear cuenta</div>
+        <p class="form-sub">Completa el formulario para registrarte en EduHub</p>
+
+        <div id="msg-reg" class="form-msg"></div>
+
+        <div class="frow">
+          <div class="fld">
+            <label for="r-nombre">Nombre</label>
+            <input type="text" id="r-nombre" placeholder="Juan" autocomplete="given-name"/>
+            <span class="ferr" id="e-r-nombre">El nombre es requerido</span>
+          </div>
+          <div class="fld">
+            <label for="r-apellido">Apellido</label>
+            <input type="text" id="r-apellido" placeholder="García" autocomplete="family-name"/>
+          </div>
+        </div>
+
+        <div class="fld">
+          <label for="r-email">Correo electrónico</label>
+          <input type="email" id="r-email" placeholder="tu@correo.com" autocomplete="email"/>
+          <span class="ferr" id="e-r-email">Ingresa un correo electrónico válido</span>
+        </div>
+
+        <div class="frow">
+          <div class="fld">
+            <label for="r-pass">Contraseña</label>
+            <div class="pw-wrap">
+              <input type="password" id="r-pass" placeholder="Mín. 8 caracteres" autocomplete="new-password"/>
+              <span class="pw-eye" onclick="togglePw('r-pass', this)" title="Mostrar u ocultar contraseña">👁</span>
+            </div>
+            <span class="ferr" id="e-r-pass">Mínimo 8 caracteres</span>
+          </div>
+          <div class="fld">
+            <label for="r-pass2">Confirmar</label>
+            <div class="pw-wrap">
+              <input type="password" id="r-pass2" placeholder="Repite la contraseña" autocomplete="new-password"/>
+            </div>
+            <span class="ferr" id="e-r-pass2">Las contraseñas no coinciden</span>
+          </div>
+        </div>
+
+        <div class="fld">
+          <label>Rol en el sistema</label>
+          <div class="role-pick">
+            <div class="rp-opt active" onclick="pickRole(this, 'estudiante')" title="Registrarse como estudiante">
+              <span class="rp-icon">👨‍🎓</span>
+              <span class="rp-lbl">Estudiante</span>
+            </div>
+            <div class="rp-opt" onclick="pickRole(this, 'docente')" title="Registrarse como docente">
+              <span class="rp-icon">👩‍🏫</span>
+              <span class="rp-lbl">Docente</span>
+            </div>
+            <div class="rp-opt" onclick="pickRole(this, 'admin')" title="Registrarse como administrador">
+              <span class="rp-icon">🛡</span>
+              <span class="rp-lbl">Admin</span>
+            </div>
+          </div>
+        </div>
+
+        <button id="btn-reg" class="btn-submit" data-label="Crear mi cuenta" onclick="doRegistro()" title="Crear cuenta nueva en EduHub">
+          Crear mi cuenta
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- Toast de notificaciones -->
+<div id="toast" class="toast">
+  <span class="toast-dot"></span>
+  <span id="toast-msg"></span>
+</div>
+
+<!-- Scripts externos -->
+<script src="js/utils.js"></script>
+<script src="js/login.js"></script>
+
+</body>
+</html>
