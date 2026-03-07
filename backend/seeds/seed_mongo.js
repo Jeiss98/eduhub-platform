@@ -1,5 +1,5 @@
 // seeds/seed_mongo.js — Datos de prueba para MongoDB (noticias)
-require('dotenv').config({ path: '../.env' });
+require('dotenv').config({ path: './.env' });
 const mongoose = require('mongoose');
 const Noticia  = require('../models/Noticia');
 
